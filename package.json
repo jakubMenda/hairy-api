@@ -1,0 +1,17 @@
+{
+  "name": "hairy-api",
+  "version": "1.0.0",
+  "description": "RESTful api for hair salon app (school project)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "mongodb": "^3.1.13"
+  }
+}
