@@ -33,5 +33,3 @@ function handleError(res, reason, message, code) {
 app.get('/', (req, res) => {
   res.send('Zdárek párek');
 });
-
-app.listen(3030);
