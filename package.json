@@ -4,9 +4,11 @@
   "description": "RESTful api for hair salon app (school project)",
   "main": "dist/server.js",
   "scripts": {
-    "build": "tslint -c tslint.json -p tsconfig.json --fix tsc",
-    "start": "node .",
-    "postinstall": "npm run build"
+    "prebuild": "tslint -c tslint.json -p tsconfig.json --fix",
+    "build": "tsc",
+    "postinstall": "npm run build",
+    "start": "npm run serve",
+    "serve": "node ."
   },
   "author": "",
   "license": "ISC",
