@@ -15,6 +15,7 @@ const ObjectID = mongodb.ObjectID;
 const localDBUri = 'mongodb://localhost:27017/test';
 let db: Db;
 
+// TODO this should be in another file + solve 'synchronous' calling
 mongodb.MongoClient.connect(process.env.MONGODB_URI || localDBUri, (err: Error, client: MongoClient) => {
   if (err) {
     logger.error(err);
@@ -31,24 +32,14 @@ mongodb.MongoClient.connect(process.env.MONGODB_URI || localDBUri, (err: Error, 
   });
 });
 
-// TODO
+// FIXME
 // routes - to be splitted into modules!
-app.get('/test', (req: Request, res: Response) => {
+app.get('/', (req: Request, res: Response) => {
   db.collection('test').find({}).toArray((err: Error, data: any[]) => {
     if (err) {
       handleErrors(res, err.message, 'Test failed', 500);
     } else {
       res.status(200).json(data);
-    }
-  });
-});
-
-app.get('/insert', (req: Request, res: Response) => {
-  db.collection('test').insertOne({ name: 'Testovací žblept v databázi' }, (err: Error) => {
-    if (err) {
-      handleErrors(res, err.message, 'Insert failed', 500);
-    } else {
-      res.status(204).send();
     }
   });
 });
