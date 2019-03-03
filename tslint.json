@@ -1,0 +1,75 @@
+{
+  "defaultSeverity": "error",
+  "extends": [
+    "tslint:recommended"
+  ],
+  "rules": {
+    "encoding": true,
+    "forin": false,
+    "indent": [
+      true,
+      "spaces"
+    ],
+    "interface-name": [
+      true,
+      "never-prefix"
+    ],
+    "linebreak-style": [
+      true,
+      "LF"
+    ],
+    "max-classes-per-file": false,
+    "max-line-length": false,
+    "member-access": false,
+    "member-ordering": false,
+    "no-bitwise": false,
+    "no-console": false,
+    "no-duplicate-imports": true,
+    "no-duplicate-switch-case": true,
+    "no-empty-interface": false,
+    "no-invalid-this": true,
+    "no-string-literal": false,
+    "no-unnecessary-callback-wrapper": true,
+    "number-literal-format": true,
+    "object-literal-key-quotes": [
+      true,
+      "as-needed"
+    ],
+    "object-literal-shorthand": false,
+    "object-literal-sort-keys": false,
+    "one-line": [
+      true,
+      "check-open-brace",
+      "check-whitespace"
+    ],
+    "one-variable-per-declaration": false,
+    "ordered-imports": false,
+    "prefer-object-spread": true,
+    "quotemark": [
+      true,
+      "single",
+      "jsx-double",
+      "avoid-template",
+      "avoid-escape"
+    ],
+    "radix": false,
+    "triple-equals": true,
+    "trailing-comma": [
+      true,
+      {
+        "esSpecCompliant": true,
+        "multiline": {
+          "arrays": "always",
+          "objects": "always",
+          "imports": "always",
+          "exports": "always",
+          "typeLiterals": "always"
+        }
+      }
+    ],
+    "typedef": true,
+    "type-literal-delimiter": true,
+    "whitespace": true,
+    "no-var-requires": false
+  }
+}
