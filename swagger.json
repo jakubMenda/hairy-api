@@ -6,21 +6,15 @@
     "description": "Školní projekt - RESTful API pro kadeřnický salón"
   },
   "schemes": [
-    "http"
+    "https"
   ],
-  "consumes": [
-    "application/json"
-  ],
-  "produces": [
-    "application/json"
-  ],
-  "host": "https://menda-hairy-api.herokuapp.com",
+  "host": "menda-hairy-api.herokuapp.com",
   "basePath": "/",
   "paths": {
     "/test": {
       "get": {
         "summary": "Testovací routa",
-        "description": "...",
+        "description": "To si snad ani description nezaslouží",
         "responses": {
           "200": {
             "description": "Seznam testovacích blbin z databáze",
