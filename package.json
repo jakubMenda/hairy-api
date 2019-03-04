@@ -7,7 +7,7 @@
     "prebuild": "tslint -c tslint.json -p tsconfig.json --fix",
     "build": "tsc",
     "postinstall": "npm run build",
-    "prestart": "npm run build",
+    "dev": "npm run build && npm run start",
     "start": "npm run serve",
     "serve": "node ."
   },
