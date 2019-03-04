@@ -6,20 +6,20 @@
   "scripts": {
     "prebuild": "tslint -c tslint.json -p tsconfig.json --fix",
     "build": "tsc",
-    "postinstall": "npm run build",
-    "dev": "npm run build && npm run start",
-    "start": "npm run serve",
+    "start": "npm run build && npm run serve",
     "serve": "node ."
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/swagger-ui-express": "^3.0.0",
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
     "mongodb": "^3.1.13",
-    "winston": "^3.2.1",
+    "swagger-ui-express": "^4.0.2",
     "tslint": "^5.13.1",
-    "typescript": "^3.3.3333"
+    "typescript": "^3.3.3333",
+    "winston": "^3.2.1"
   },
   "devDependencies": {
     "@types/body-parser": "^1.17.0",

@@ -1,0 +1,46 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Hairy API",
+    "description": "Školní projekt - RESTful API pro kadeřnický salón"
+  },
+  "schemes": [
+    "http"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "host": "https://menda-hairy-api.herokuapp.com",
+  "basePath": "/",
+  "paths": {
+    "/test": {
+      "get": {
+        "summary": "Testovací routa",
+        "description": "...",
+        "responses": {
+          "200": {
+            "description": "Seznam testovacích blbin z databáze",
+            "schema": {
+              "type": "array",
+              "items": {
+                "properties": {
+                  "_id": {
+                    "type": "string",
+                    "uniqueItems": "true"
+                  },
+                  "name": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
