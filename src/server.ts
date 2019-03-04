@@ -11,12 +11,12 @@ const app = express();
 app.use(bodyParser.json());
 
 // Set up Mongo
-const ObjectID = mongodb.ObjectID;
-const localDBUri = 'mongodb://localhost:27017/test';
+const localDBUri = 'mongodb://localhost:27017/hairy-api';
+const mongoOptions = { useNewUrlParser: true };
 let db: Db;
 
 // TODO this should be in another file + solve 'synchronous' calling
-mongodb.MongoClient.connect(process.env.MONGODB_URI || localDBUri, (err: Error, client: MongoClient) => {
+mongodb.MongoClient.connect(process.env.MONGODB_URI || localDBUri, mongoOptions, (err: Error, client: MongoClient) => {
   if (err) {
     logger.error(err);
     process.exit(1);
