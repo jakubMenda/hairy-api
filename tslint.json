@@ -27,7 +27,7 @@
     "no-duplicate-imports": true,
     "no-duplicate-switch-case": true,
     "no-empty-interface": false,
-    "no-invalid-this": true,
+    "no-invalid-this": false,
     "no-string-literal": false,
     "no-unnecessary-callback-wrapper": true,
     "number-literal-format": true,

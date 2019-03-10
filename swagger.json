@@ -8,16 +8,60 @@
   "schemes": [
     "https"
   ],
+  "tags": [
+    {
+      "name": "users",
+      "description": "Registrace & přihlášení"
+    },
+    {
+      "name": "my",
+      "description": "Všechno týkající se přihlášeného uživatele"
+    }
+  ],
   "host": "menda-hairy-api.herokuapp.com",
   "basePath": "/",
   "paths": {
-    "/test": {
-      "get": {
-        "summary": "Testovací routa",
-        "description": "To si snad ani description nezaslouží",
+    "/user/": {
+      "post": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Registrace nového uživatele",
+        "description": "Vytvoří uživatele v databázi a záznam vrátí.",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Tělo dotazu",
+            "required": "true",
+            "schema": {
+              "properties": {
+                "firstName": {
+                  "type": "string"
+                },
+                "lastName": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string",
+                  "uniqueItems": "true"
+                },
+                "password": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
         "responses": {
-          "200": {
-            "description": "Seznam testovacích blbin z databáze",
+          "201": {
+            "description": "Registrovaný uživatel",
             "schema": {
               "type": "array",
               "items": {
@@ -26,9 +70,141 @@
                     "type": "string",
                     "uniqueItems": "true"
                   },
-                  "name": {
+                  "firstName": {
                     "type": "string"
+                  },
+                  "lastName": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string",
+                    "uniqueItems": "true"
                   }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Konflikt - uživatel už existuje",
+            "schema": {
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/sign-in": {
+      "post": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Přihlášení",
+        "description": "Vrátí autorizační token a údaje o uživateli",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Tělo dotazu",
+            "required": "true",
+            "schema": {
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "uniqueItems": "true"
+                },
+                "password": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Registrovaný uživatel",
+            "schema": {
+              "type": "array",
+              "items": {
+                "properties": {
+                  "token": {
+                    "type": "string"
+                  },
+                  "user": {
+                    "properties": {
+                      "_id": {
+                        "type": "string",
+                        "uniqueItems": "true"
+                      },
+                      "firstName": {
+                        "type": "string"
+                      },
+                      "lastName": {
+                        "type": "string"
+                      },
+                      "email": {
+                        "type": "string",
+                        "uniqueItems": "true"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Špatný email nebo heslo",
+            "schema": {
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/my/user": {
+      "get": {
+        "tags": [
+          "my"
+        ],
+        "summary": "Profilové informace",
+        "description": "Vrátí info o uživateli",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Info o uživateli",
+            "schema": {
+              "properties": {
+                "_id": {
+                  "type": "string",
+                  "uniqueItems": "true"
+                },
+                "firstName": {
+                  "type": "string"
+                },
+                "lastName": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string",
+                  "uniqueItems": "true"
                 }
               }
             }
