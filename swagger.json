@@ -133,30 +133,20 @@
           "200": {
             "description": "Registrovaný uživatel",
             "schema": {
-              "type": "array",
-              "items": {
-                "properties": {
-                  "token": {
-                    "type": "string"
-                  },
-                  "user": {
-                    "properties": {
-                      "_id": {
-                        "type": "string",
-                        "uniqueItems": "true"
-                      },
-                      "firstName": {
-                        "type": "string"
-                      },
-                      "lastName": {
-                        "type": "string"
-                      },
-                      "email": {
-                        "type": "string",
-                        "uniqueItems": "true"
-                      }
-                    }
-                  }
+              "properties": {
+                "_id": {
+                  "type": "string",
+                  "uniqueItems": "true"
+                },
+                "firstName": {
+                  "type": "string"
+                },
+                "lastName": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string",
+                  "uniqueItems": "true"
                 }
               }
             }
@@ -205,6 +195,93 @@
                 "email": {
                   "type": "string",
                   "uniqueItems": "true"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "my"
+        ],
+        "summary": "Editace profilu & změna hesla",
+        "description": "Vše volitelné - updatuje se jen to, co poskytnete",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Tělo dotazu",
+            "required": "true",
+            "schema": {
+              "properties": {
+                "firstName": {
+                  "type": "string"
+                },
+                "lastName": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Upravený profil (bez hesla)",
+            "schema": {
+              "properties": {
+                "_id": {
+                  "type": "string",
+                  "uniqueItems": "true"
+                },
+                "firstName": {
+                  "type": "string"
+                },
+                "lastName": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string",
+                  "uniqueItems": "true"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Špatný autorizační token",
+            "schema": {
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Nebyl nalezen uživatel, kterého se snažíte upravit",
+            "schema": {
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - vyplněna nesprávná pole",
+            "schema": {
+              "properties": {
+                "message": {
+                  "type": "string"
                 }
               }
             }
