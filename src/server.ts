@@ -1,9 +1,10 @@
 import mongoose from 'mongoose';
-import { express as app } from './di';
-import logger from './utils/logger';
 import dotenv from 'dotenv';
 
 dotenv.config();
+
+import { express as app } from './di';
+import logger from './utils/logger';
 
 const port = process.env.PORT || 8080;
 
