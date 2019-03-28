@@ -11,6 +11,11 @@ export interface UserModel extends Document {
   firstName?: string;
   lastName?: string;
   password?: string;
+  practiceFrom?: string;
+  specializations?: string[];
+  workingFromMinutes?: number;
+  workToMinutes?: number;
+  workingDays?: number[];
   generateAuthToken?: () => string;
   getPublicProfile?: () => UserModel;
 }
@@ -45,6 +50,34 @@ export const UserSchema: Schema = new Schema({
     type: String,
     required: true,
     minLength: 5,
+  },
+  practiceFrom: {
+    type: String,
+    required: false,
+  },
+  specializations: {
+    type: Array,
+    required: false,
+  },
+  workingFromMinutes: {
+    type: Number,
+    required: false,
+  },
+  workingToMinutes: {
+    type: Number,
+    required: false,
+  },
+  workingDays: {
+    type: Array,
+    required: false,
+  },
+  workingAtSalonId: {
+    type: String,
+    required: false,
+  },
+  isSpecialist: {
+    type: Boolean,
+    required: true,
   },
 });
 

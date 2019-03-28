@@ -17,7 +17,6 @@ myController.get('/user', async (req: Request, res: Response, next: NextFunction
       });
     }
     res.status(OK).json(await user.getPublicProfile());
-    next();
   } catch (e) {
     return next(e);
   }
@@ -26,7 +25,14 @@ myController.get('/user', async (req: Request, res: Response, next: NextFunction
 myController.put('/user', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const updates = Object.keys(req.body);
-    const allowedUpdates = ['firstName', 'lastName', 'password'];
+    let allowedUpdates: string[] = [];
+
+    if (req.body.isSpecialist) {
+      allowedUpdates = ['firstName', 'lastName', 'password', 'practiceFrom', 'workingFromMinutes', 'workingToMinutes', 'workingDays', 'specialization', 'workingAtSalonId'];
+    } else {
+      allowedUpdates = ['firstName', 'lastName', 'password'];
+    }
+
     const isValidOperation = updates.every((update: string) => allowedUpdates.includes(update));
 
     if (!isValidOperation) {
@@ -50,7 +56,6 @@ myController.put('/user', async (req: Request, res: Response, next: NextFunction
     const updatedUser = await user.save();
 
     res.status(OK).json(await updatedUser.getPublicProfile());
-    next();
   } catch(e) {
     return next(e);
   }
