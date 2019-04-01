@@ -1,9 +1,10 @@
 import { NextFunction, Request, Response, Router } from 'express';
 import _ from 'lodash';
-import { DBService } from '../../di';
-import { CONFLICT, OK, CREATED } from 'http-codes';
+import { DBService, EmailsService } from '../../di';
+import { CONFLICT, OK, CREATED, NOT_FOUND } from 'http-codes';
 import { HttpError } from '../../utils/errorHandling/errors';
-import { newUserValidation, signInValidation } from './validation';
+import { newSpecialistValidation, newUserValidation, resetPasswordValidation, signInValidation } from './validation';
+import { generatePassword } from '../../utils/passwordGenerator';
 
 const usersController = Router();
 
@@ -11,9 +12,13 @@ usersController.post('/', async (req: Request, res: Response, next: NextFunction
   try {
     // Čapnu si tělo requestu
     const userData = _.get(req, 'body');
-
-    // yup validace
-    await newUserValidation.validate(userData);
+    if (userData.isSpecialist) {
+      // yup validace
+      await newSpecialistValidation.validate(userData);
+    } else {
+      userData.isSpecialist = false;
+      await newUserValidation.validate(userData);
+    }
 
     // nejdřív kontrola, jestli už není email v db
     const existingUser = await DBService.UsersService.getUserByEmail(_.get(userData, 'email', ''));
@@ -34,11 +39,43 @@ usersController.post('/', async (req: Request, res: Response, next: NextFunction
       // Naformátování modelu do objektu a vytáhnutí hesla - nechci ho posílat zpět
       const profile = await savedUser.getPublicProfile();
 
+      await EmailsService.sendWelcomeAboardMail(savedUser.email);
+
       // odpověď klientovi
       res.status(CREATED).json(profile);
     }
   } catch (e) {
     // podobně jako výše. V případě, že nastane jakákoli chyba, jen jí předám dál a stará se o ní error handler
+    return next(e);
+  }
+});
+
+usersController.post('/specialist', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const userData = _.get(req, 'body');
+    userData.isSpecialist = true;
+    await newSpecialistValidation.validate(userData);
+
+    const existingUser = await DBService.UsersService.getUserByEmail(_.get(userData, 'email', ''));
+    if (existingUser) {
+      next(
+        new HttpError({
+          statusCode: CONFLICT,
+          message: `Email (${_.get(userData, 'email', '')}) is already in use`,
+        })
+      );
+    } else {
+      const generatedPassword = generatePassword();
+      userData.password = generatedPassword;
+
+      const savedUser = await DBService.UsersService.saveUser(userData);
+      const profile = await savedUser.getPublicProfile();
+
+      await EmailsService.sendSpecialistWelcomeAboardMail(savedUser.email, generatedPassword);
+
+      res.status(CREATED).json(profile);
+    }
+  } catch (e) {
     return next(e);
   }
 });
@@ -69,6 +106,29 @@ usersController.post('/sign-in', async (req: Request, res: Response, next: NextF
       user: profile,
     });
   } catch(e) {
+    return next(e);
+  }
+});
+
+usersController.put('/reset-password', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const reqBody = _.get(req, 'body');
+    await resetPasswordValidation.validate(reqBody);
+
+    const userModel = await DBService.UsersService.getUserByEmail(reqBody.email);
+    if (!userModel) {
+      throw new HttpError({
+        statusCode: NOT_FOUND,
+        message: 'User not found',
+      });
+    }
+
+    const generatedPassword = generatePassword();
+    userModel.password = generatedPassword;
+    await EmailsService.sendResetPasswordMail(userModel.email, generatedPassword);
+    await userModel.save();
+    res.status(OK).json(await userModel.getPublicProfile());
+  } catch (e) {
     return next(e);
   }
 });
