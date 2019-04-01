@@ -8,18 +8,7 @@ const categoryController = Router();
 
 categoryController.get('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const token = req.header('Authorization');
-        const user = await getRequestingUser(token);
-
-        if (!user) {
-            throw new HttpError({
-                statusCode: NOT_FOUND,
-                message: 'User not found',
-            });
-        }
-
         const categories = await DBService.CategoryService.getCategories();
-
         res.status(OK).json(categories);
         next();
     } catch (e) {

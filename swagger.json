@@ -39,7 +39,17 @@
             "description": "Kategorie",
             "schema": {
               "type": "array",
-              "items": []
+              "items": {
+                "type": "object",
+                "properties": {
+                  "_id": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  }
+                }
+              }
             }
           }
         }

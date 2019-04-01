@@ -6,7 +6,6 @@ export default class CategoryManager {
     }
 
     public async getCategories() {
-        // Vytáhnu category z db
         const categories = await this.getAllCategories();
         return categories;
     }

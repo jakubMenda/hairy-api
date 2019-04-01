@@ -6,7 +6,6 @@ export default class DBManager {
     public CategoryService: Category;
 
     constructor() {
-        // Služby volající dotazy do db rozdělené dle db kolekcí
         this.UsersService = new Users();
         this.CategoryService = new Category();
     }
