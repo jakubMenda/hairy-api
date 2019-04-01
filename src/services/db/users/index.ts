@@ -1,8 +1,7 @@
 import bcrypt from 'bcryptjs';
-import { User, UserModel } from './model';
-import { HttpError } from '../../../utils/errorHandling/errors';
-import { FORBIDDEN } from 'http-codes';
-import { Model } from 'mongoose';
+import {User} from './model';
+import {HttpError} from '../../../utils/errorHandling/errors';
+import {FORBIDDEN} from 'http-codes';
 
 export default class UsersManager {
   public async getUserByEmail(email: string) {

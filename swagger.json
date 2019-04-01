@@ -21,7 +21,31 @@
   "host": "menda-hairy-api.herokuapp.com",
   "basePath": "/",
   "paths": {
-    "/user/": {
+    "/category": {
+      "get": {
+        "tags": [
+          "category"
+        ],
+        "summary": "Kategorie",
+        "description": "Vrátí hodnoty kategorií",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Kategorie",
+            "schema": {
+              "type": "array",
+              "items": []
+            }
+          }
+        }
+      }
+    },
+    "/user": {
       "post": {
         "tags": [
           "users"
