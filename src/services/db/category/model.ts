@@ -4,7 +4,6 @@ export interface CategoryModel extends Document {
     name?: string;
 }
 
-
 export const CategorySchema: Schema = new Schema({
     name: {
         type: String,
