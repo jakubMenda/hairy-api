@@ -21,6 +21,40 @@
   "host": "menda-hairy-api.herokuapp.com",
   "basePath": "/",
   "paths": {
+    "/category": {
+      "get": {
+        "tags": [
+          "category"
+        ],
+        "summary": "Kategorie",
+        "description": "Vrátí hodnoty kategorií",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Kategorie",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "_id": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/users": {
       "post": {
         "tags": [
@@ -43,47 +77,16 @@
             "schema": {
               "properties": {
                 "firstName": {
-                  "type": "string",
-                  "required": "true"
+                  "type": "string"
                 },
                 "lastName": {
-                  "type": "string",
-                  "required": "true"
+                  "type": "string"
                 },
                 "email": {
                   "type": "string",
-                  "uniqueItems": "true",
-                  "required": "true"
+                  "uniqueItems": "true"
                 },
                 "password": {
-                  "type": "string",
-                  "required": "true"
-                },
-                "isSpecialist": {
-                  "type": "boolean"
-                },
-                "practiceFrom": {
-                  "type": "string"
-                },
-                "workingFromMinutes": {
-                  "type": "number"
-                },
-                "workingToMinutes": {
-                  "type": "number"
-                },
-                "workingDays": {
-                  "type": "array",
-                  "items": {
-                    "type": "number"
-                  }
-                },
-                "specializations": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                },
-                "workingAtSalonId": {
                   "type": "string"
                 }
               }
@@ -110,33 +113,6 @@
                   "email": {
                     "type": "string",
                     "uniqueItems": "true"
-                  },
-                  "isSpecialist": {
-                    "type": "boolean"
-                  },
-                  "practiceFrom": {
-                    "type": "string"
-                  },
-                  "workingFromMinutes": {
-                    "type": "number"
-                  },
-                  "workingToMinutes": {
-                    "type": "number"
-                  },
-                  "workingDays": {
-                    "type": "array",
-                    "items": {
-                      "type": "number"
-                    }
-                  },
-                  "specializations": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "workingAtSalonId": {
-                    "type": "string"
                   }
                 }
               }
@@ -205,33 +181,6 @@
                 "email": {
                   "type": "string",
                   "uniqueItems": "true"
-                },
-                "isSpecialist": {
-                  "type": "boolean"
-                },
-                "practiceFrom": {
-                  "type": "string"
-                },
-                "workingFromMinutes": {
-                  "type": "number"
-                },
-                "workingToMinutes": {
-                  "type": "number"
-                },
-                "workingDays": {
-                  "type": "array",
-                  "items": {
-                    "type": "number"
-                  }
-                },
-                "specializations": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                },
-                "workingAtSalonId": {
-                  "type": "string"
                 }
               }
             }
@@ -245,175 +194,6 @@
                 }
               }
             }
-          }
-        }
-      }
-    },
-    "/users/specialist": {
-      "post": {
-        "tags": [
-          "users"
-        ],
-        "summary": "Registrace specialisty",
-        "description": "Vytvoří uživatele v databázi a záznam vrátí.",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "description": "Tělo dotazu",
-            "required": "true",
-            "schema": {
-              "properties": {
-                "firstName": {
-                  "type": "string",
-                  "required": "true"
-                },
-                "lastName": {
-                  "type": "string",
-                  "required": "true"
-                },
-                "email": {
-                  "type": "string",
-                  "uniqueItems": "true",
-                  "required": "true"
-                },
-                "practiceFrom": {
-                  "type": "string",
-                  "required": "true"
-                },
-                "workingFromMinutes": {
-                  "type": "number",
-                  "required": "true"
-                },
-                "workingToMinutes": {
-                  "type": "number",
-                  "required": "true"
-                },
-                "workingDays": {
-                  "type": "array",
-                  "items": {
-                    "type": "number"
-                  },
-                  "required": "true"
-                },
-                "specializations": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  },
-                  "required": "true"
-                },
-                "workingAtSalonId": {
-                  "type": "string",
-                  "required": "true"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Registrovaný uživatel",
-            "schema": {
-              "type": "array",
-              "items": {
-                "properties": {
-                  "_id": {
-                    "type": "string",
-                    "uniqueItems": "true"
-                  },
-                  "firstName": {
-                    "type": "string"
-                  },
-                  "lastName": {
-                    "type": "string"
-                  },
-                  "email": {
-                    "type": "string",
-                    "uniqueItems": "true"
-                  },
-                  "isSpecialist": {
-                    "type": "boolean"
-                  },
-                  "practiceFrom": {
-                    "type": "string"
-                  },
-                  "workingFromMinutes": {
-                    "type": "number"
-                  },
-                  "workingToMinutes": {
-                    "type": "number"
-                  },
-                  "workingDays": {
-                    "type": "array",
-                    "items": {
-                      "type": "number"
-                    }
-                  },
-                  "specializations": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "workingAtSalonId": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "Konflikt - uživatel už existuje",
-            "schema": {
-              "properties": {
-                "message": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/users/reset-password": {
-      "put": {
-        "tags": [
-          "users"
-        ],
-        "summary": "Reset hesla",
-        "description": "Heslo pošle na email",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "description": "Tělo dotazu",
-            "required": "true",
-            "schema": {
-              "properties": {
-                "email": {
-                  "type": "string",
-                  "uniqueItems": "true"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Heslo zaslané na mail"
           }
         }
       }
@@ -449,33 +229,6 @@
                 "email": {
                   "type": "string",
                   "uniqueItems": "true"
-                },
-                "isSpecialist": {
-                  "type": "boolean"
-                },
-                "practiceFrom": {
-                  "type": "string"
-                },
-                "workingFromMinutes": {
-                  "type": "number"
-                },
-                "workingToMinutes": {
-                  "type": "number"
-                },
-                "workingDays": {
-                  "type": "array",
-                  "items": {
-                    "type": "number"
-                  }
-                },
-                "specializations": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                },
-                "workingAtSalonId": {
-                  "type": "string"
                 }
               }
             }
@@ -503,42 +256,12 @@
             "schema": {
               "properties": {
                 "firstName": {
-                  "type": "string",
-                  "required": "true"
-                },
-                "lastName": {
-                  "type": "string",
-                  "required": "true"
-                },
-                "password": {
-                  "type": "string",
-                  "required": "true"
-                },
-                "isSpecialist": {
-                  "type": "boolean"
-                },
-                "practiceFrom": {
                   "type": "string"
                 },
-                "workingFromMinutes": {
-                  "type": "number"
+                "lastName": {
+                  "type": "string"
                 },
-                "workingToMinutes": {
-                  "type": "number"
-                },
-                "workingDays": {
-                  "type": "array",
-                  "items": {
-                    "type": "number"
-                  }
-                },
-                "specializations": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                },
-                "workingAtSalonId": {
+                "password": {
                   "type": "string"
                 }
               }
@@ -563,33 +286,6 @@
                 "email": {
                   "type": "string",
                   "uniqueItems": "true"
-                },
-                "isSpecialist": {
-                  "type": "boolean"
-                },
-                "practiceFrom": {
-                  "type": "string"
-                },
-                "workingFromMinutes": {
-                  "type": "number"
-                },
-                "workingToMinutes": {
-                  "type": "number"
-                },
-                "workingDays": {
-                  "type": "array",
-                  "items": {
-                    "type": "number"
-                  }
-                },
-                "specializations": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                },
-                "workingAtSalonId": {
-                  "type": "string"
                 }
               }
             }
