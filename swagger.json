@@ -55,6 +55,63 @@
         }
       }
     },
+    "/salon": {
+      "put": {
+        "tags": [
+          ""
+        ],
+        "summary": "Vložení salónu",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Tělo dotazu",
+            "required": "true",
+            "schema": {
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "city": {
+                  "type": "string"
+                },
+                "street": {
+                  "type": "string"
+                },
+                "postCode": {
+                  "type": "string"
+                },
+                "houseNumber": {
+                  "type": "string"
+                },
+                "phone": {
+                  "type": "string"
+                },
+                "manager": {
+                  "type": "string"
+                },
+                "deposit": {
+                  "type": "string"
+                },
+                "serviceCancelDate": {
+                  "type": "string"
+                },
+                "lastEditBy": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
     "/users": {
       "post": {
         "tags": [
