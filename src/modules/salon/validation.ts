@@ -39,5 +39,8 @@ export const newSalonValidation = yup.object().shape({
     serviceCancelDate: yup
         .date(),
     lastEditBy: yup
+        .string()
+        .required(),
+    lastEdit: yup
         .date(),
 });

@@ -12,6 +12,7 @@ export interface SalonModel extends Document {
     deposit?: number;
     serviceCancelDate?: Date;
     lastEditBy?: UserModel;
+    lastEdit?: Date;
 }
 
 export const SalonSchema: Schema = new Schema({
@@ -53,6 +54,10 @@ export const SalonSchema: Schema = new Schema({
     },
     lastEditBy: {
         type: Schema.Types.ObjectId, ref: 'User',
+        required: false,
+    },
+    lastEdit: {
+        type: Date,
         required: false,
     },
 });

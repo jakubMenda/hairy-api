@@ -105,6 +105,9 @@
                 },
                 "lastEditBy": {
                   "type": "string"
+                },
+                "lastEdit": {
+                  "type": "string"
                 }
               }
             }
