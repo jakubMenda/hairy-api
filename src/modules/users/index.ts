@@ -5,6 +5,9 @@ import { CONFLICT, OK, CREATED, NOT_FOUND } from 'http-codes';
 import { HttpError } from '../../utils/errorHandling/errors';
 import { newSpecialistValidation, newUserValidation, resetPasswordValidation, signInValidation } from './validation';
 import { generatePassword } from '../../utils/passwordGenerator';
+import { authenticate } from '../../middleware/authentication';
+import { getRequestingUser } from '../../utils/authentication';
+import { UserModel } from '../../services/db/users/model';
 
 const usersController = Router();
 
@@ -50,11 +53,29 @@ usersController.post('/', async (req: Request, res: Response, next: NextFunction
   }
 });
 
-usersController.post('/specialist', async (req: Request, res: Response, next: NextFunction) => {
+usersController.post('/specialist', authenticate, async (req: Request, res: Response, next: NextFunction) => {
   try {
+    const token = req.header('Authorization');
+    const admin = await getRequestingUser(token);
+    if (!admin) {
+      throw new HttpError({
+        statusCode: NOT_FOUND,
+        message: 'User not found',
+      });
+    }
+
     const userData = _.get(req, 'body');
     userData.isSpecialist = true;
     await newSpecialistValidation.validate(userData);
+    const adminsSalon = await DBService.SalonService.getSalonByUserId(admin._id);
+    if (!adminsSalon) {
+      next(
+        new HttpError({
+          statusCode: NOT_FOUND,
+          message: 'You have no salon yet',
+        })
+      );
+    }
 
     const existingUser = await DBService.UsersService.getUserByEmail(_.get(userData, 'email', ''));
     if (existingUser) {
@@ -69,6 +90,11 @@ usersController.post('/specialist', async (req: Request, res: Response, next: Ne
       userData.password = generatedPassword;
 
       const savedUser = await DBService.UsersService.saveUser(userData);
+
+      const specialistsIds = adminsSalon.specialists.map((user: UserModel) => user._id);
+      const newSpecialists = [...specialistsIds, savedUser._id];
+      await DBService.SalonService.updateSalon(adminsSalon._id, { specialists: newSpecialists });
+
       const profile = await savedUser.getPublicProfile();
 
       await EmailsService.sendSpecialistWelcomeAboardMail(savedUser.email, generatedPassword);

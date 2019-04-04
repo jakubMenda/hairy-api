@@ -30,19 +30,41 @@ export const salonValidation = yup.object().shape({
     houseNumber: yup
         .string()
         .required(),
-    manager: yup
-        .string()
-        .required(),
     deposit: yup
-        .number()
-        .required(),
+        .number(),
     serviceCancelDate: yup
-        .date(),
-    lastEditBy: yup
-        .string(),
-    lastEdit: yup
         .date(),
     specialists: yup
         .array()
         .of(yup.string()),
+});
+
+export const updateSalonValidation = yup.object().shape({
+  name: yupAdjusted
+    .string()
+    .max(100),
+  city: yup
+    .string()
+    .max(50),
+  street: yup
+    .string()
+    .max(80),
+  email: yupAdjusted
+    .string()
+    .email()
+    .max(80),
+  phone: yup
+    .string(),
+  postCode: yup
+    .string()
+    .required(),
+  houseNumber: yup
+    .string(),
+  deposit: yup
+    .number(),
+  serviceCancelDate: yup
+    .date(),
+  specialists: yup
+    .array()
+    .of(yup.string()),
 });

@@ -56,11 +56,11 @@
       }
     },
     "/salon": {
-      "put": {
+      "post": {
         "tags": [
-          ""
+          "salon"
         ],
-        "summary": "Vložení salónu",
+        "summary": "Založení salónu",
         "description": "",
         "consumes": [
           "application/json"
@@ -94,22 +94,10 @@
                 "phone": {
                   "type": "string"
                 },
-                "manager": {
-                  "type": "string"
-                },
                 "deposit": {
                   "type": "string"
                 },
                 "serviceCancelDate": {
-                  "type": "string"
-                },
-                "lastEditBy": {
-                  "type": "string"
-                },
-                "lastEdit": {
-                  "type": "string"
-                },
-                "specialists": {
                   "type": "string"
                 }
               }
@@ -384,6 +372,130 @@
             }
           }
         }
+      }
+    },
+    "/my/salon": {
+      "get": {
+        "tags": [
+          "my"
+        ],
+        "summary": "Detail profilu salónu salónu",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "city": {
+                  "type": "string"
+                },
+                "street": {
+                  "type": "string"
+                },
+                "postCode": {
+                  "type": "string"
+                },
+                "houseNumber": {
+                  "type": "string"
+                },
+                "phone": {
+                  "type": "string"
+                },
+                "deposit": {
+                  "type": "string"
+                },
+                "serviceCancelDate": {
+                  "type": "string"
+                },
+                "manager": {
+                  "type": "string"
+                },
+                "specialists": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "createdBy": {
+                  "type": "string"
+                },
+                "updatedBy": {
+                  "type": "string"
+                },
+                "createdAt": {
+                  "type": "string"
+                },
+                "updatedAt": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "my"
+        ],
+        "summary": "Úprava salónu",
+        "description": "Úprava salónu admina (bere v potaz autorizaci)",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Tělo dotazu",
+            "required": "true",
+            "schema": {
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "city": {
+                  "type": "string"
+                },
+                "street": {
+                  "type": "string"
+                },
+                "postCode": {
+                  "type": "string"
+                },
+                "houseNumber": {
+                  "type": "string"
+                },
+                "phone": {
+                  "type": "string"
+                },
+                "deposit": {
+                  "type": "string"
+                },
+                "serviceCancelDate": {
+                  "type": "string"
+                },
+                "specialists": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        ]
       }
     }
   }

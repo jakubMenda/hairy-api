@@ -1,31 +1,42 @@
-import {Salon} from './model';
-import {HttpError} from '../../../utils/errorHandling/errors';
-import {UNAUTHORIZED} from 'http-codes';
+import { Salon } from './model';
+import { HttpError } from '../../../utils/errorHandling/errors';
+import { UNAUTHORIZED } from 'http-codes';
+import { ObjectID } from 'bson';
 
 export default class SalonManager {
-    public async getSalonByUserId(userId: string) {
-        // Chci najít salon, kde je uživatel manažer
-        let salon = await Salon.findOne({ manager: userId });
-        // Pokud neni manažer, může být specialista v daném salónu
-        // Snažil jsem se naplnit specialisty salónu a v nich najít usera
-        // Kdyby bylo víc salonu, tak nebude findOne
-        // V tomto přístupu se musí do salonu "pushovat" specialisté (asi takto Salon.specialists.push(user))
-        // _
-        // Šolich možnost:
-        // Pokud je to blbost, tak jelikož máme jeden salón,
-        // tak se můžem podívat jestli je specialista a v tom případě prostě salon vrátit
-        salon = salon ? salon : await Salon.findOne().populate({
-            path: 'specialists',
-            match: {
-                _id: userId,
-            },
-        }).exec();
-        if (!salon) {
-            throw new HttpError({
-                statusCode: UNAUTHORIZED,
-                message: 'User has no salon',
-            });
-        }
-        return salon;
+  public async getSalonByUserId(userId: string) {
+    const salon = await Salon.findOne({ manager: userId })
+      .populate('manager', '-password')
+      .populate('specialists', '-password')
+      .populate('createdBy', '-password')
+      .populate('updatedBy', '-password');
+
+    if (!salon) {
+      await Salon.findOne({ specialists: userId })
+        .populate('manager', '-password')
+        .populate('specialists', '-password')
+        .populate('createdBy', '-password')
+        .populate('updatedBy', '-password');
     }
+
+    return salon;
+  }
+
+  public async createSalon(data: object, managerId: string) {
+    const dataEnhanced = {
+      ...data,
+      createdBy: managerId,
+      manager: new ObjectID(managerId),
+    };
+
+    const newSalon = new Salon(dataEnhanced);
+
+    return await newSalon.save();
+  }
+
+  public async updateSalon(id: string, data: object) {
+    const updated = await Salon.findByIdAndUpdate(id, data);
+
+    return updated;
+  }
 }
