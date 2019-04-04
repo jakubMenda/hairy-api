@@ -3,7 +3,6 @@ import { getRequestingUser } from '../../utils/authentication';
 import { BAD_REQUEST, NOT_FOUND, OK } from 'http-codes';
 import { HttpError } from '../../utils/errorHandling/errors';
 import {salonValidation} from '../salon/validation';
-import _ from 'lodash';
 import {DBService} from '../../di/services/DBService';
 
 const myController = Router();
