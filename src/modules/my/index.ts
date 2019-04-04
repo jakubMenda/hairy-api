@@ -2,6 +2,8 @@ import { NextFunction, Request, Response, Router } from 'express';
 import { getRequestingUser } from '../../utils/authentication';
 import { BAD_REQUEST, NOT_FOUND, OK } from 'http-codes';
 import { HttpError } from '../../utils/errorHandling/errors';
+import { salonValidation, updateSalonValidation } from '../salon/validation';
+import {DBService} from '../../di/services/DBService';
 
 const myController = Router();
 
@@ -57,6 +59,59 @@ myController.put('/user', async (req: Request, res: Response, next: NextFunction
 
     res.status(OK).json(await updatedUser.getPublicProfile());
   } catch(e) {
+    return next(e);
+  }
+});
+
+myController.get('/salon', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const token = req.header('Authorization');
+    const user = await getRequestingUser(token);
+
+    if (!user) {
+      throw new HttpError({
+        statusCode: NOT_FOUND,
+        message: 'User not found',
+      });
+    }
+    const salon = await DBService.SalonService.getSalonByUserId(user.id);
+    if (!salon) {
+      throw new HttpError({
+        statusCode: NOT_FOUND,
+        message: 'Salon not found',
+      });
+    }
+    res.status(OK).json(salon);
+  } catch (e) {
+    return next(e);
+  }
+});
+
+myController.put('/salon', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const token = req.header('Authorization');
+    const user = await getRequestingUser(token);
+    if (!user) {
+      throw new HttpError({
+        statusCode: NOT_FOUND,
+        message: 'User not found',
+      });
+    }
+    const salon = await DBService.SalonService.getSalonByUserId(user.id);
+    if (!salon) {
+      throw new HttpError({
+        statusCode: NOT_FOUND,
+        message: 'Salon not found',
+      });
+    }
+
+    await updateSalonValidation.validate(req.body);
+
+    req.body.updatedBy = user.id;
+
+    await DBService.SalonService.updateSalon(salon._id, req.body);
+    res.status(OK).json({});
+  } catch (e) {
     return next(e);
   }
 });
