@@ -106,6 +106,42 @@
         ]
       }
     },
+    "/hair-type": {
+      "get": {
+        "tags": [
+          "hair-type"
+        ],
+        "summary": "Délka vlasů",
+        "description": "Vrátí hodnoty délky vlasů",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Délka vlasů",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "_id": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+
     "/users": {
       "post": {
         "tags": [
