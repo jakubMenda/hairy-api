@@ -4,6 +4,7 @@ import myController from './my';
 import usersController from './users';
 import {authenticate} from '../middleware/authentication';
 import categoryController from './category';
+import hairTypeController from './hairType';
 
 const swaggerDocument = require('../../swagger.json');
 
@@ -12,4 +13,5 @@ export default Router()
     .use('/users', usersController)
     .use(authenticate)
     .use('/my', myController)
-    .use('/category', categoryController);
+    .use('/category', categoryController)
+    .use('/hair-type', hairTypeController);
