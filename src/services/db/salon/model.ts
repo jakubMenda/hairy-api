@@ -8,11 +8,14 @@ export interface SalonModel extends Document {
     postCode?: string;
     houseNumber?: string;
     phone?: string;
+    // Tohle je asi píčovina když je to validace typescript, ale nebyl jsem si jistej co s tim.. jestli to prostě nechat string?
     manager?: UserModel;
     deposit?: number;
+    // Stejně jako předchozí koment
     serviceCancelDate?: Date;
     lastEditBy?: UserModel;
     lastEdit?: Date;
+    specialists?: UserModel[];
 }
 
 export const SalonSchema: Schema = new Schema({
@@ -58,6 +61,10 @@ export const SalonSchema: Schema = new Schema({
     },
     lastEdit: {
         type: Date,
+        required: false,
+    },
+    specialists: {
+        type: Array,
         required: false,
     },
 });

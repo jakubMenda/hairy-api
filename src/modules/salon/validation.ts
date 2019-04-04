@@ -3,7 +3,7 @@ import { greaterThanField } from '../../utils/yup';
 
 const yupAdjusted = yup as any;
 
-export const newSalonValidation = yup.object().shape({
+export const salonValidation = yup.object().shape({
     name: yupAdjusted
         .string()
         .max(100)
@@ -39,8 +39,10 @@ export const newSalonValidation = yup.object().shape({
     serviceCancelDate: yup
         .date(),
     lastEditBy: yup
-        .string()
-        .required(),
+        .string(),
     lastEdit: yup
         .date(),
+    specialists: yup
+        .array()
+        .of(yup.string()),
 });

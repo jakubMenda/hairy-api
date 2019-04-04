@@ -108,6 +108,9 @@
                 },
                 "lastEdit": {
                   "type": "string"
+                },
+                "specialists": {
+                  "type": "string"
                 }
               }
             }
