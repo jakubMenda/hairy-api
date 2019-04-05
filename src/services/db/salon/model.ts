@@ -1,6 +1,5 @@
 import { Document, model, Model, Schema } from 'mongoose';
 import { UserModel } from '../users/model';
-import {ServiceModel} from '../service/model';
 
 export interface SalonModel extends Document {
   name?: string;

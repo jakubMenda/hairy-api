@@ -5,7 +5,6 @@ import { HttpError } from '../../utils/errorHandling/errors';
 import { updateSalonValidation } from '../salon/validation';
 import {DBService} from '../../di/services/DBService';
 import {newServiceValidation, updateServiceValidation} from '../service/validation';
-import _ from 'lodash';
 
 const myController = Router();
 
