@@ -1,9 +1,11 @@
 import { NextFunction, Request, Response, Router } from 'express';
 import { getRequestingUser } from '../../utils/authentication';
-import { BAD_REQUEST, NOT_FOUND, OK } from 'http-codes';
+import {BAD_REQUEST, NOT_FOUND, OK, UNAUTHORIZED} from 'http-codes';
 import { HttpError } from '../../utils/errorHandling/errors';
-import { salonValidation, updateSalonValidation } from '../salon/validation';
+import { updateSalonValidation } from '../salon/validation';
 import {DBService} from '../../di/services/DBService';
+import {newServiceValidation, updateServiceValidation} from '../service/validation';
+import _ from 'lodash';
 
 const myController = Router();
 
@@ -110,6 +112,137 @@ myController.put('/salon', async (req: Request, res: Response, next: NextFunctio
     req.body.updatedBy = user.id;
 
     await DBService.SalonService.updateSalon(salon._id, req.body);
+    res.status(OK).json({});
+  } catch (e) {
+    return next(e);
+  }
+});
+
+myController.get('/salon/services', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const token = req.header('Authorization');
+    const user = await getRequestingUser(token);
+    if (!user) {
+      throw new HttpError({
+        statusCode: NOT_FOUND,
+        message: 'User not found',
+      });
+    }
+    const salon = await DBService.SalonService.getSalonByUserId(user._id);
+    if (!salon) {
+      throw new HttpError({
+        statusCode: NOT_FOUND,
+        message: 'Salon not found',
+      });
+    }
+    const services = await DBService.ServiceService.getServicesBySalonId(salon._id);
+
+    res.status(OK).json(services);
+  } catch (e) {
+    return next(e);
+  }
+});
+
+myController.post('/salon/services', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const token = req.header('Authorization');
+    const user = await getRequestingUser(token);
+    if (!user) {
+      throw new HttpError({
+        statusCode: NOT_FOUND,
+        message: 'User not found',
+      });
+    }
+    const salon = await DBService.SalonService.getSalonByUserId(user.id);
+    if (!salon) {
+      throw new HttpError({
+        statusCode: NOT_FOUND,
+        message: 'Salon not found',
+      });
+    }
+    await newServiceValidation.validate(req.body);
+    req.body.salon = salon.id;
+    const service = await DBService.ServiceService.createService(req.body);
+
+    res.status(OK).json(service);
+  } catch (e) {
+    return next(e);
+  }
+});
+
+myController.put('/salon/services/:id', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const token = req.header('Authorization');
+    const user = await getRequestingUser(token);
+    if (!user) {
+      throw new HttpError({
+        statusCode: NOT_FOUND,
+        message: 'User not found',
+      });
+    }
+    const salon = await DBService.SalonService.getSalonByUserId(user.id);
+    if (!salon) {
+      throw new HttpError({
+        statusCode: NOT_FOUND,
+        message: 'Salon not found',
+      });
+    }
+    const serviceId = req.params.id;
+    const service = await DBService.ServiceService.findServiceById(serviceId);
+    if (!service) {
+      throw new HttpError({
+        statusCode: NOT_FOUND,
+        message: 'Service not found',
+      });
+    }
+    // Musí mít přístup k salonu (specialista nebo manažer)
+    if (salon._id.toString() !== service.salon.toString()) {
+      throw new HttpError({
+        statusCode: UNAUTHORIZED,
+        message: 'Unauthorized to edit this service',
+      });
+    }
+    await updateServiceValidation.validate(req.body);
+    await DBService.ServiceService.updateService(service._id, req.body);
+    res.status(OK).json({});
+  } catch (e) {
+    return next(e);
+  }
+});
+
+myController.delete('/salon/services/:id', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const token = req.header('Authorization');
+    const user = await getRequestingUser(token);
+    if (!user) {
+      throw new HttpError({
+        statusCode: NOT_FOUND,
+        message: 'User not found',
+      });
+    }
+    const salon = await DBService.SalonService.getSalonByUserId(user.id);
+    if (!salon) {
+      throw new HttpError({
+        statusCode: NOT_FOUND,
+        message: 'Salon not found',
+      });
+    }
+    const serviceId = req.params.id;
+    const service = await DBService.ServiceService.findServiceById(serviceId);
+    if (!service) {
+      throw new HttpError({
+        statusCode: NOT_FOUND,
+        message: 'Service not found',
+      });
+    }
+    // Musí mít přístup k salonu (specialista nebo manažer)
+    if (salon._id.toString() !== service.salon.toString()) {
+      throw new HttpError({
+        statusCode: UNAUTHORIZED,
+        message: 'Unauthorized to edit this service',
+      });
+    }
+    await DBService.ServiceService.removeServiceById(service._id);
     res.status(OK).json({});
   } catch (e) {
     return next(e);

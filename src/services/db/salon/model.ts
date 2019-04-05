@@ -1,5 +1,6 @@
 import { Document, model, Model, Schema } from 'mongoose';
 import { UserModel } from '../users/model';
+import {ServiceModel} from '../service/model';
 
 export interface SalonModel extends Document {
   name?: string;
@@ -14,6 +15,7 @@ export interface SalonModel extends Document {
   lastEditBy?: string | UserModel;
   lastEdit?: Date;
   specialists?: Array<string | UserModel>;
+  services?: Array<string | ServiceModel>;
 }
 
 export const SalonSchema: Schema = new Schema({

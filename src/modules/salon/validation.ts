@@ -1,5 +1,4 @@
 import * as yup from 'yup';
-import { greaterThanField } from '../../utils/yup';
 
 const yupAdjusted = yup as any;
 
