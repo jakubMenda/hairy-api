@@ -15,7 +15,6 @@ export interface SalonModel extends Document {
   lastEditBy?: string | UserModel;
   lastEdit?: Date;
   specialists?: Array<string | UserModel>;
-  services?: Array<string | ServiceModel>;
 }
 
 export const SalonSchema: Schema = new Schema({
