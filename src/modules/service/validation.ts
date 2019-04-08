@@ -1,9 +1,7 @@
 import * as yup from 'yup';
 
-const yupAdjusted = yup as any;
-
 export const newServiceValidation = yup.object().shape({
-    name: yupAdjusted
+    name: yup
         .string()
         .max(100)
         .required(),
@@ -14,12 +12,10 @@ export const newServiceValidation = yup.object().shape({
     duration: yup
         .number()
         .required(),
-    durationBefore: yup
-        .number()
-        .required(),
-    durationAfter: yup
-        .number()
-        .required(),
+    timeWindows: yup.array().of(yup.object().shape({
+            start: yup.number().required(),
+            end: yup.number().required(),
+        })).required(),
     price: yup
         .number()
         .required(),
@@ -27,10 +23,18 @@ export const newServiceValidation = yup.object().shape({
         .string()
         .max(300)
         .required(),
+    category: yup
+        .array()
+        .of(yup.string())
+        .required(),
+    hairType: yup
+        .array()
+        .of(yup.string())
+        .required(),
 });
 
 export const updateServiceValidation = yup.object().shape({
-    name: yupAdjusted
+    name: yup
         .string()
         .max(100),
     description: yup
@@ -38,13 +42,19 @@ export const updateServiceValidation = yup.object().shape({
         .max(300),
     duration: yup
         .number(),
-    durationBefore: yup
-        .number(),
-    durationAfter: yup
-        .number(),
+    timeWindows: yup.array().of(yup.object().shape({
+            start: yup.number().required(),
+            end: yup.number().required(),
+        })),
     price: yup
         .number(),
     priceDescription: yup
         .string()
         .max(300),
+    category: yup
+        .array()
+        .of(yup.string()),
+    hairType: yup
+        .array()
+        .of(yup.string()),
 });

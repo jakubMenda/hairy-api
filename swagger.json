@@ -558,13 +558,17 @@
                 "description": {
                   "type": "string"
                 },
+                "timeWindows": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "start":{ "type": "number" },
+                      "end":{ "type": "number" }
+                    }
+                  }
+                },
                 "duration": {
-                  "type": "string"
-                },
-                "durationBefore": {
-                  "type": "string"
-                },
-                "durationAfter": {
                   "type": "string"
                 },
                 "price": {
@@ -613,13 +617,17 @@
                 "description": {
                   "type": "string"
                 },
+                "timeWindows": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "start":{ "type": "number" },
+                      "end":{ "type": "number" }
+                    }
+                  }
+                },
                 "duration": {
-                  "type": "string"
-                },
-                "durationBefore": {
-                  "type": "string"
-                },
-                "durationAfter": {
                   "type": "string"
                 },
                 "price": {
@@ -664,13 +672,17 @@
                 "description": {
                   "type": "string"
                 },
+                "timeWindows": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "start":{ "type": "number" },
+                      "end":{ "type": "number" }
+                    }
+                  }
+                },
                 "duration": {
-                  "type": "string"
-                },
-                "durationBefore": {
-                  "type": "string"
-                },
-                "durationAfter": {
                   "type": "string"
                 },
                 "price": {

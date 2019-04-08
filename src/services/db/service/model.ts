@@ -7,12 +7,11 @@ export interface ServiceModel extends Document {
   name?: string;
   description?: string;
   duration?: number;
-  durationBefore?: number;
-  durationAfter?: number;
   price?: number;
   priceDescription?: string;
-  hairType?: string | HairTypeModel;
-  category?: string | CategoryModel;
+  timeWindows: [] | object;
+  hairType?: string[] | HairTypeModel;
+  category?: string[] | CategoryModel;
   salon?: string | SalonModel;
 }
 
@@ -25,15 +24,20 @@ export const ServiceSchema: Schema = new Schema({
     type: String,
     required: true,
   },
+  timeWindows: [{
+    type: new Schema({
+      start: {
+        type: Number,
+        required: true,
+      },
+      end: {
+        type: Number,
+        required: true,
+      },
+    },{_id: false}),
+    required: true,
+  }],
   duration: {
-    type: Number,
-    required: true,
-  },
-  durationBefore: {
-    type: Number,
-    required: true,
-  },
-  durationAfter: {
     type: Number,
     required: true,
   },
@@ -45,16 +49,16 @@ export const ServiceSchema: Schema = new Schema({
     type: String,
     required: true,
   },
-  hairType: {
+  hairType: [{
     type: Schema.Types.ObjectId,
     ref: 'HairType',
     required: true,
-  },
-  category: {
+  }],
+  category: [{
     type: Schema.Types.ObjectId,
     ref: 'Category',
     required: true,
-  },
+  }],
   salon: {
     type: Schema.Types.ObjectId,
     ref: 'Salon',

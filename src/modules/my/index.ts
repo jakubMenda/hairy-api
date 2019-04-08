@@ -159,6 +159,7 @@ myController.post('/salon/services', async (req: Request, res: Response, next: N
         message: 'Salon not found',
       });
     }
+    console.log(req.body);
     await newServiceValidation.validate(req.body);
     req.body.salon = salon.id;
     const service = await DBService.ServiceService.createService(req.body);
