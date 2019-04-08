@@ -1,7 +1,5 @@
-import { Salon } from './model';
-import { HttpError } from '../../../utils/errorHandling/errors';
-import { UNAUTHORIZED } from 'http-codes';
-import { ObjectID } from 'bson';
+import {Salon} from './model';
+import {ObjectID} from 'bson';
 
 export default class SalonManager {
   public async getSalonByUserId(userId: string) {

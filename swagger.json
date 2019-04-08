@@ -140,8 +140,6 @@
         }
       }
     },
-
-
     "/users": {
       "post": {
         "tags": [
@@ -532,6 +530,269 @@
             }
           }
         ]
+      }
+    },
+    "/my/order": {
+      "get": {
+        "tags": [
+          "my"
+        ],
+        "summary": "Seznam objednávek",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "services": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "_id": {
+                    "type": "string"
+                  },
+                  "phone": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "noteCustomer": {
+                    "type": "string"
+                  },
+                  "noteAdmin": {
+                    "type": "string"
+                  },
+                  "notificationType": {
+                    "type": "string"
+                  },
+                  "notificationTime": {
+                    "type": "string"
+                  },
+                  "firstName": {
+                    "type": "string"
+                  },
+                  "lastName": {
+                    "type": "string"
+                  },
+                  "lastChange": {
+                    "type": "string"
+                  },
+                  "changedBy": {
+                    "type": "string"
+                  },
+                  "specialist": {
+                    "type": "string"
+                  },
+                  "orderStatus": {
+                    "type": "string"
+                  },
+                  "createdAt": {
+                    "type": "string"
+                  },
+                  "updatedAt": {
+                    "type": "string"
+                  },
+                  "__v": {
+                    "type": "integer",
+                    "format": "int32"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "my"
+        ],
+        "summary": "Uprava objednavky",
+        "description": "Uprava objednavky",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "description": "id objednavky",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Tělo dotazu",
+            "required": "true",
+            "schema": {
+              "properties": {
+                "services": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "_id": {
+                  "type": "string"
+                },
+                "phone": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string"
+                },
+                "noteCustomer": {
+                  "type": "string"
+                },
+                "noteAdmin": {
+                  "type": "string"
+                },
+                "notificationType": {
+                  "type": "string"
+                },
+                "notificationTime": {
+                  "type": "string"
+                },
+                "firstName": {
+                  "type": "string"
+                },
+                "lastName": {
+                  "type": "string"
+                },
+                "lastChange": {
+                  "type": "string"
+                },
+                "changedBy": {
+                  "type": "string"
+                },
+                "specialist": {
+                  "type": "string"
+                },
+                "orderStatus": {
+                  "type": "string"
+                },
+                "createdAt": {
+                  "type": "string"
+                },
+                "updatedAt": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "my"
+        ],
+        "summary": "Vlozeni objednavky",
+        "description": "vlozeni objednavky",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Tělo dotazu",
+            "required": "true",
+            "schema": {
+              "properties": {
+                "services": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "_id": {
+                  "type": "string"
+                },
+                "phone": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string"
+                },
+                "noteCustomer": {
+                  "type": "string"
+                },
+                "noteAdmin": {
+                  "type": "string"
+                },
+                "notificationType": {
+                  "type": "string"
+                },
+                "notificationTime": {
+                  "type": "string"
+                },
+                "firstName": {
+                  "type": "string"
+                },
+                "lastName": {
+                  "type": "string"
+                },
+                "lastChange": {
+                  "type": "string"
+                },
+                "changedBy": {
+                  "type": "string"
+                },
+                "specialist": {
+                  "type": "string"
+                },
+                "orderStatus": {
+                  "type": "string"
+                },
+                "createdAt": {
+                  "type": "string"
+                },
+                "updatedAt": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "my"
+        ],
+        "summary": "smazani objednavky",
+        "operationId": "smazani objednavky",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "description": "id objednavky",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
       }
     }
   }
