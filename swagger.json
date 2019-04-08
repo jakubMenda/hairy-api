@@ -878,6 +878,195 @@
           }
         ]
       }
+    },
+    "/my/salon/services": {
+      "get": {
+        "tags": [
+          "my"
+        ],
+        "summary": "Dostupné služby salónu",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "timeWindows": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "start":{ "type": "number" },
+                      "end":{ "type": "number" }
+                    }
+                  }
+                },
+                "duration": {
+                  "type": "string"
+                },
+                "price": {
+                  "type": "string"
+                },
+                "priceDescription": {
+                  "type": "string"
+                },
+                "hairType": {
+                  "type": "string"
+                },
+                "category": {
+                  "type": "string"
+                },
+                "salon": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "my"
+        ],
+        "summary": "Vožení služby salónu",
+        "description": "Vožení služby salónu (bere v potaz autorizaci)",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Tělo dotazu",
+            "required": "true",
+            "schema": {
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "timeWindows": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "start":{ "type": "number" },
+                      "end":{ "type": "number" }
+                    }
+                  }
+                },
+                "duration": {
+                  "type": "string"
+                },
+                "price": {
+                  "type": "string"
+                },
+                "priceDescription": {
+                  "type": "string"
+                },
+                "hairType": {
+                  "type": "string"
+                },
+                "category": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "/my/salon/services/:id": {
+      "put": {
+        "tags": [
+          "my"
+        ],
+        "summary": "Úprava služby salónu",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "timeWindows": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "start":{ "type": "number" },
+                      "end":{ "type": "number" }
+                    }
+                  }
+                },
+                "duration": {
+                  "type": "string"
+                },
+                "price": {
+                  "type": "string"
+                },
+                "priceDescription": {
+                  "type": "string"
+                },
+                "hairType": {
+                  "type": "string"
+                },
+                "category": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "my"
+        ],
+        "summary": "Smazání služby salónu",
+        "description": "Smazání služby salónu (bere v potaz autorizaci)",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": "true"
+          }
+        ]
+      }
     }
   }
 }
