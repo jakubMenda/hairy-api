@@ -30,9 +30,9 @@ myController.put('/user', async (req: Request, res: Response, next: NextFunction
     let allowedUpdates: string[] = [];
 
     if (req.body.isSpecialist) {
-      allowedUpdates = ['firstName', 'lastName', 'password', 'practiceFrom', 'workingFromMinutes', 'workingToMinutes', 'workingDays', 'specialization', 'workingAtSalonId'];
+      allowedUpdates = ['firstName', 'lastName', 'password', 'practiceFrom', 'workingFromMinutes', 'workingToMinutes', 'workingDays', 'specialization', 'workingAtSalonId', 'isSpecialist'];
     } else {
-      allowedUpdates = ['firstName', 'lastName', 'password'];
+      allowedUpdates = ['firstName', 'lastName', 'password', 'isSpecialist'];
     }
 
     const isValidOperation = updates.every((update: string) => allowedUpdates.includes(update));

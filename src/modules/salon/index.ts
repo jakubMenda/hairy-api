@@ -32,7 +32,7 @@ salonController.post('/', authenticate, async (req: Request, res: Response, next
     const reqBody = _.get(req, 'body');
     await salonValidation.validate(reqBody);
 
-    await DBService.SalonService.createSalon(reqBody, user._id);
+    await DBService.SalonService.createSalon(reqBody, user._id, user.isSpecialist);
 
     res.status(OK).json();
   } catch (e) {

@@ -11,6 +11,7 @@ export interface UserModel extends Document {
   firstName?: string;
   lastName?: string;
   password?: string;
+  isSpecialist?: boolean;
   practiceFrom?: string;
   specializations?: string[];
   workingFromMinutes?: number;

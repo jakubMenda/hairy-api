@@ -22,12 +22,16 @@ export default class SalonManager {
     return salon;
   }
 
-  public async createSalon(data: object, managerId: string) {
-    const dataEnhanced = {
+  public async createSalon(data: object, managerId: string, isSpecialist?: boolean) {
+    const dataEnhanced: any = {
       ...data,
       createdBy: managerId,
       manager: new ObjectID(managerId),
     };
+
+    if (isSpecialist) {
+      dataEnhanced.specialists = [managerId];
+    }
 
     const newSalon = new Salon(dataEnhanced);
 
