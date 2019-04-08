@@ -6,7 +6,7 @@ dotenv.config();
 import { express as app } from './di';
 import logger from './utils/logger';
 
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 8082;
 
 mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
