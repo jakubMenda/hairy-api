@@ -3,14 +3,14 @@ import {ObjectID} from 'bson';
 
 export default class SalonManager {
   public async getSalonByUserId(userId: string) {
-    const salon = await Salon.findOne({ manager: userId })
+    let salon = await Salon.findOne({ manager: userId })
       .populate('manager', '-password')
       .populate('specialists', '-password')
       .populate('createdBy', '-password')
       .populate('updatedBy', '-password');
 
     if (!salon) {
-      await Salon.findOne({ specialists: userId })
+      salon =  await Salon.findOne({ specialists: userId })
         .populate('manager', '-password')
         .populate('specialists', '-password')
         .populate('createdBy', '-password')

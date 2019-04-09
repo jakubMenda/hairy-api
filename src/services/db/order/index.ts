@@ -1,4 +1,5 @@
 import {Order} from './model';
+import {UserModel} from '../users/model';
 
 export default class OrderManager {
     public async getOrdersByUser(userId: string) {
@@ -25,5 +26,14 @@ export default class OrderManager {
 
     public async updateOrder(orderId: string, data: object) {
         return await Order.findByIdAndUpdate(orderId, data);
+    }
+
+    public getOrdersBySalon(specialists: Array<string | UserModel>) {
+        const orders: any[] = [];
+        specialists.forEach((specialist) => {
+            orders.push(Order.find({specialist:specialist}));
+        });
+
+        return orders;
     }
 }
