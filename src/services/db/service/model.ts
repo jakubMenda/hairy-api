@@ -1,46 +1,69 @@
-import {Document, model, Model, Schema} from 'mongoose';
+import { Document, model, Model, Schema } from 'mongoose';
+import {HairTypeModel} from '../hairType/model';
+import {CategoryModel} from '../category/model';
+import {SalonModel} from '../salon/model';
 
 export interface ServiceModel extends Document {
-    name?: string;
-    description?: string;
-    performTime?: string;
-    afterTime?: string;
-    beforeTime?: string;
-    priceDescription?: string;
-    price?: string;
+  name?: string;
+  description?: string;
+  duration?: number;
+  price?: number;
+  priceDescription?: string;
+  timeWindows: [] | object;
+  hairType?: string[] | HairTypeModel;
+  category?: string[] | CategoryModel;
+  salon?: string | SalonModel;
 }
 
 export const ServiceSchema: Schema = new Schema({
-    name: {
-        type: String,
+  name: {
+    type: String,
+    required: true,
+  },
+  description: {
+    type: String,
+    required: true,
+  },
+  timeWindows: [{
+    type: new Schema({
+      start: {
+        type: Number,
         required: true,
-    },
-    description: {
-        type: String,
+      },
+      end: {
+        type: Number,
         required: true,
-    },
-    performTime: {
-        type: String,
-        required: true,
-    },
-    afterTime: {
-        type: String,
-        required: true,
-    },
-    beforeTime: {
-        type: String,
-        required: true,
-    },
-    priceDescription: {
-        type: Date,
-        required: true,
-    },
-    price: {
-        type: String,
-        required: true,
-    },
-}, {
-    timestamps: true,
+      },
+    },{_id: false}),
+    required: true,
+  }],
+  duration: {
+    type: Number,
+    required: true,
+  },
+  price: {
+    type: Number,
+    required: true,
+  },
+  priceDescription: {
+    type: String,
+    required: true,
+  },
+  hairType: [{
+    type: Schema.Types.ObjectId,
+    ref: 'HairType',
+    required: true,
+  }],
+  category: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Category',
+    required: true,
+  }],
+  salon: {
+    type: Schema.Types.ObjectId,
+    ref: 'Salon',
+    required: true,
+  },
 });
 
 export const Service: Model<ServiceModel> = model<ServiceModel>('Service', ServiceSchema);

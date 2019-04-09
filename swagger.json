@@ -16,6 +16,18 @@
     {
       "name": "my",
       "description": "Všechno týkající se přihlášeného uživatele"
+    },
+    {
+      "name": "category",
+      "description": "Kategorie služeb (muž, žena,...)"
+    },
+    {
+      "name": "salon",
+      "description": "Administrace salónů"
+    },
+    {
+      "name": "hair-type",
+      "description": "Typy vlasů (krátké, dlouhé,...)"
     }
   ],
   "host": "menda-hairy-api.herokuapp.com",
@@ -162,16 +174,47 @@
             "schema": {
               "properties": {
                 "firstName": {
-                  "type": "string"
+                  "type": "string",
+                  "required": "true"
                 },
                 "lastName": {
-                  "type": "string"
+                  "type": "string",
+                  "required": "true"
                 },
                 "email": {
                   "type": "string",
-                  "uniqueItems": "true"
+                  "uniqueItems": "true",
+                  "required": "true"
                 },
                 "password": {
+                  "type": "string",
+                  "required": "true"
+                },
+                "isSpecialist": {
+                  "type": "boolean"
+                },
+                "practiceFrom": {
+                  "type": "string"
+                },
+                "workingFromMinutes": {
+                  "type": "number"
+                },
+                "workingToMinutes": {
+                  "type": "number"
+                },
+                "workingDays": {
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  }
+                },
+                "specializations": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "workingAtSalonId": {
                   "type": "string"
                 }
               }
@@ -198,6 +241,33 @@
                   "email": {
                     "type": "string",
                     "uniqueItems": "true"
+                  },
+                  "isSpecialist": {
+                    "type": "boolean"
+                  },
+                  "practiceFrom": {
+                    "type": "string"
+                  },
+                  "workingFromMinutes": {
+                    "type": "number"
+                  },
+                  "workingToMinutes": {
+                    "type": "number"
+                  },
+                  "workingDays": {
+                    "type": "array",
+                    "items": {
+                      "type": "number"
+                    }
+                  },
+                  "specializations": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "workingAtSalonId": {
+                    "type": "string"
                   }
                 }
               }
@@ -266,6 +336,33 @@
                 "email": {
                   "type": "string",
                   "uniqueItems": "true"
+                },
+                "isSpecialist": {
+                  "type": "boolean"
+                },
+                "practiceFrom": {
+                  "type": "string"
+                },
+                "workingFromMinutes": {
+                  "type": "number"
+                },
+                "workingToMinutes": {
+                  "type": "number"
+                },
+                "workingDays": {
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  }
+                },
+                "specializations": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "workingAtSalonId": {
+                  "type": "string"
                 }
               }
             }
@@ -279,6 +376,175 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/users/specialist": {
+      "post": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Registrace specialisty",
+        "description": "Vytvoří uživatele v databázi a záznam vrátí.",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Tělo dotazu",
+            "required": "true",
+            "schema": {
+              "properties": {
+                "firstName": {
+                  "type": "string",
+                  "required": "true"
+                },
+                "lastName": {
+                  "type": "string",
+                  "required": "true"
+                },
+                "email": {
+                  "type": "string",
+                  "uniqueItems": "true",
+                  "required": "true"
+                },
+                "practiceFrom": {
+                  "type": "string",
+                  "required": "true"
+                },
+                "workingFromMinutes": {
+                  "type": "number",
+                  "required": "true"
+                },
+                "workingToMinutes": {
+                  "type": "number",
+                  "required": "true"
+                },
+                "workingDays": {
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  },
+                  "required": "true"
+                },
+                "specializations": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "required": "true"
+                },
+                "workingAtSalonId": {
+                  "type": "string",
+                  "required": "true"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Registrovaný uživatel",
+            "schema": {
+              "type": "array",
+              "items": {
+                "properties": {
+                  "_id": {
+                    "type": "string",
+                    "uniqueItems": "true"
+                  },
+                  "firstName": {
+                    "type": "string"
+                  },
+                  "lastName": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string",
+                    "uniqueItems": "true"
+                  },
+                  "isSpecialist": {
+                    "type": "boolean"
+                  },
+                  "practiceFrom": {
+                    "type": "string"
+                  },
+                  "workingFromMinutes": {
+                    "type": "number"
+                  },
+                  "workingToMinutes": {
+                    "type": "number"
+                  },
+                  "workingDays": {
+                    "type": "array",
+                    "items": {
+                      "type": "number"
+                    }
+                  },
+                  "specializations": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "workingAtSalonId": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Konflikt - uživatel už existuje",
+            "schema": {
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/reset-password": {
+      "put": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Reset hesla",
+        "description": "Heslo pošle na email",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Tělo dotazu",
+            "required": "true",
+            "schema": {
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "uniqueItems": "true"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Heslo zaslané na mail"
           }
         }
       }
@@ -314,6 +580,33 @@
                 "email": {
                   "type": "string",
                   "uniqueItems": "true"
+                },
+                "isSpecialist": {
+                  "type": "boolean"
+                },
+                "practiceFrom": {
+                  "type": "string"
+                },
+                "workingFromMinutes": {
+                  "type": "number"
+                },
+                "workingToMinutes": {
+                  "type": "number"
+                },
+                "workingDays": {
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  }
+                },
+                "specializations": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "workingAtSalonId": {
+                  "type": "string"
                 }
               }
             }
@@ -348,6 +641,33 @@
                 },
                 "password": {
                   "type": "string"
+                },
+                "isSpecialist": {
+                  "type": "boolean"
+                },
+                "practiceFrom": {
+                  "type": "string"
+                },
+                "workingFromMinutes": {
+                  "type": "number"
+                },
+                "workingToMinutes": {
+                  "type": "number"
+                },
+                "workingDays": {
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  }
+                },
+                "specializations": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "workingAtSalonId": {
+                  "type": "string"
                 }
               }
             }
@@ -371,6 +691,33 @@
                 "email": {
                   "type": "string",
                   "uniqueItems": "true"
+                },
+                "isSpecialist": {
+                  "type": "boolean"
+                },
+                "practiceFrom": {
+                  "type": "string"
+                },
+                "workingFromMinutes": {
+                  "type": "number"
+                },
+                "workingToMinutes": {
+                  "type": "number"
+                },
+                "workingDays": {
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  }
+                },
+                "specializations": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "workingAtSalonId": {
+                  "type": "string"
                 }
               }
             }
@@ -530,6 +877,458 @@
             }
           }
         ]
+      }
+    },
+    "/my/salon/services": {
+      "get": {
+        "tags": [
+          "my"
+        ],
+        "summary": "Dostupné služby salónu",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "timeWindows": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "start":{ "type": "number" },
+                      "end":{ "type": "number" }
+                    }
+                  }
+                },
+                "duration": {
+                  "type": "string"
+                },
+                "price": {
+                  "type": "string"
+                },
+                "priceDescription": {
+                  "type": "string"
+                },
+                "hairType": {
+                  "type": "string"
+                },
+                "category": {
+                  "type": "string"
+                },
+                "salon": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "my"
+        ],
+        "summary": "Vožení služby salónu",
+        "description": "Vožení služby salónu (bere v potaz autorizaci)",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Tělo dotazu",
+            "required": "true",
+            "schema": {
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "timeWindows": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "start":{ "type": "number" },
+                      "end":{ "type": "number" }
+                    }
+                  }
+                },
+                "duration": {
+                  "type": "string"
+                },
+                "price": {
+                  "type": "string"
+                },
+                "priceDescription": {
+                  "type": "string"
+                },
+                "hairType": {
+                  "type": "string"
+                },
+                "category": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "/my/salon/services/:id": {
+      "put": {
+        "tags": [
+          "my"
+        ],
+        "summary": "Úprava služby salónu",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "timeWindows": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "start":{ "type": "number" },
+                      "end":{ "type": "number" }
+                    }
+                  }
+                },
+                "duration": {
+                  "type": "string"
+                },
+                "price": {
+                  "type": "string"
+                },
+                "priceDescription": {
+                  "type": "string"
+                },
+                "hairType": {
+                  "type": "string"
+                },
+                "category": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "my"
+        ],
+        "summary": "Smazání služby salónu",
+        "description": "Smazání služby salónu (bere v potaz autorizaci)",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": "true"
+          }
+        ]
+      }
+    },
+    "/my/order": {
+      "get": {
+        "tags": [
+          "my"
+        ],
+        "summary": "Seznam objednávek",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "services": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "_id": {
+                    "type": "string"
+                  },
+                  "phone": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "noteCustomer": {
+                    "type": "string"
+                  },
+                  "noteAdmin": {
+                    "type": "string"
+                  },
+                  "notificationType": {
+                    "type": "string"
+                  },
+                  "notificationTime": {
+                    "type": "string"
+                  },
+                  "firstName": {
+                    "type": "string"
+                  },
+                  "lastName": {
+                    "type": "string"
+                  },
+                  "lastChange": {
+                    "type": "string"
+                  },
+                  "changedBy": {
+                    "type": "string"
+                  },
+                  "specialist": {
+                    "type": "string"
+                  },
+                  "orderStatus": {
+                    "type": "string"
+                  },
+                  "createdAt": {
+                    "type": "string"
+                  },
+                  "updatedAt": {
+                    "type": "string"
+                  },
+                  "__v": {
+                    "type": "integer",
+                    "format": "int32"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "my"
+        ],
+        "summary": "Uprava objednavky",
+        "description": "Uprava objednavky",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "description": "id objednavky",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Tělo dotazu",
+            "required": "true",
+            "schema": {
+              "properties": {
+                "services": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "_id": {
+                  "type": "string"
+                },
+                "phone": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string"
+                },
+                "noteCustomer": {
+                  "type": "string"
+                },
+                "noteAdmin": {
+                  "type": "string"
+                },
+                "notificationType": {
+                  "type": "string"
+                },
+                "notificationTime": {
+                  "type": "string"
+                },
+                "firstName": {
+                  "type": "string"
+                },
+                "lastName": {
+                  "type": "string"
+                },
+                "lastChange": {
+                  "type": "string"
+                },
+                "changedBy": {
+                  "type": "string"
+                },
+                "specialist": {
+                  "type": "string"
+                },
+                "orderStatus": {
+                  "type": "string"
+                },
+                "createdAt": {
+                  "type": "string"
+                },
+                "updatedAt": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "my"
+        ],
+        "summary": "Vlozeni objednavky",
+        "description": "vlozeni objednavky",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Tělo dotazu",
+            "required": "true",
+            "schema": {
+              "properties": {
+                "services": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "_id": {
+                  "type": "string"
+                },
+                "phone": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string"
+                },
+                "noteCustomer": {
+                  "type": "string"
+                },
+                "noteAdmin": {
+                  "type": "string"
+                },
+                "notificationType": {
+                  "type": "string"
+                },
+                "notificationTime": {
+                  "type": "string"
+                },
+                "firstName": {
+                  "type": "string"
+                },
+                "lastName": {
+                  "type": "string"
+                },
+                "lastChange": {
+                  "type": "string"
+                },
+                "changedBy": {
+                  "type": "string"
+                },
+                "specialist": {
+                  "type": "string"
+                },
+                "orderStatus": {
+                  "type": "string"
+                },
+                "createdAt": {
+                  "type": "string"
+                },
+                "updatedAt": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "my"
+        ],
+        "summary": "smazani objednavky",
+        "operationId": "smazani objednavky",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "description": "id objednavky",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
       }
     }
   }
