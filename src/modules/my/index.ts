@@ -282,7 +282,7 @@ myController.put('/order', async (req: Request, res: Response, next: NextFunctio
         const orderId = req.query.id;
         const order = await DBService.OrderService.getOrder(orderId);
 
-        if (order === null) {
+        if (!order) {
             throw new HttpError({
                 statusCode: NOT_FOUND,
                 message: 'Order with id ${orderId} not found',
@@ -320,7 +320,7 @@ myController.delete('/order', async (req: Request, res: Response, next: NextFunc
         const orderId = req.query.id;
         const order = await DBService.OrderService.getOrder(orderId);
 
-        if (order === null) {
+        if (!order) {
             throw new HttpError({
                 statusCode: NOT_FOUND,
                 message: 'Order with id ${orderId} not found',
