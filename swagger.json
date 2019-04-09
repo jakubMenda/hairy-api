@@ -1171,8 +1171,12 @@
                   "items": {
                     "type": "object",
                     "properties": {
-                      "start":{ "type": "number" },
-                      "end":{ "type": "number" }
+                      "start": {
+                        "type": "number"
+                      },
+                      "end": {
+                        "type": "number"
+                      }
                     }
                   }
                 },
@@ -1230,8 +1234,12 @@
                   "items": {
                     "type": "object",
                     "properties": {
-                      "start":{ "type": "number" },
-                      "end":{ "type": "number" }
+                      "start": {
+                        "type": "number"
+                      },
+                      "end": {
+                        "type": "number"
+                      }
                     }
                   }
                 },
@@ -1285,8 +1293,12 @@
                   "items": {
                     "type": "object",
                     "properties": {
-                      "start":{ "type": "number" },
-                      "end":{ "type": "number" }
+                      "start": {
+                        "type": "number"
+                      },
+                      "end": {
+                        "type": "number"
+                      }
                     }
                   }
                 },
@@ -1496,9 +1508,32 @@
           }
         ]
       },
-      "post": {
+      "delete": {
         "tags": [
           "my"
+        ],
+        "summary": "smazani objednavky",
+        "operationId": "smazani objednavky",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "description": "id objednavky",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/order": {
+      "post": {
+        "tags": [
+          "order"
         ],
         "summary": "Vlozeni objednavky",
         "description": "vlozeni objednavky",
@@ -1571,27 +1606,6 @@
             }
           }
         ]
-      },
-      "delete": {
-        "tags": [
-          "my"
-        ],
-        "summary": "smazani objednavky",
-        "operationId": "smazani objednavky",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "query",
-            "description": "id objednavky",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        }
       }
     }
   }

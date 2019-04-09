@@ -267,27 +267,6 @@ myController.get('/order', async (req: Request, res: Response, next: NextFunctio
     }
 });
 
-myController.post('/order', async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const token = req.header('Authorization');
-        const user = await getRequestingUser(token);
-
-        if (!user) {
-            throw new HttpError({
-                statusCode: NOT_FOUND,
-                message: 'User not found',
-            });
-        }
-
-        await orderValidation.validate(req.body);
-
-        await DBService.OrderService.createOrder(req.body, user.id);
-
-        res.status(OK).json();
-    } catch (e) {
-        return next(e);
-    }
-});
 
 myController.put('/order', async (req: Request, res: Response, next: NextFunction) => {
     try {
