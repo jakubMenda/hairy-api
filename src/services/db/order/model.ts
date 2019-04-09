@@ -1,5 +1,6 @@
 import {Document, model, Model, Schema} from 'mongoose';
 import {UserModel} from '../users/model';
+import {ServiceModel} from '../service/model';
 
 export interface OrderModel extends Document {
     phone?: string;
@@ -14,8 +15,7 @@ export interface OrderModel extends Document {
     changedBy?: string | UserModel;
     specialist?: string | UserModel;
     orderStatus?: string;
-    // services?: Array<string | ServiceModel>;
-    services?: string[];
+    services?: Array<string | ServiceModel>;
 }
 
 export const OrderSchema: Schema = new Schema({
@@ -53,6 +53,8 @@ export const OrderSchema: Schema = new Schema({
     },
     lastChange: {
         type: Date,
+        createdAt: true,
+        updatedAt: true,
         required: false,
     },
     changedBy: {
@@ -69,8 +71,7 @@ export const OrderSchema: Schema = new Schema({
         type: String,
         required: true,
     },
-    // services: [{type: Schema.Types.ObjectId, ref: 'Service'}],
-    services: [{type: String}],
+    services: [{type: Schema.Types.ObjectId, ref: 'Service'}],
 }, {
     timestamps: true,
 });

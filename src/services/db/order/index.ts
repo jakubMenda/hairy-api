@@ -7,13 +7,12 @@ export default class OrderManager {
     }
 
     public async getOrder(orderId: string) {
-        return await Order.findOne({_id: orderId});
+        return await Order.findById(orderId);
     }
 
     public async createOrder(data: object, userId: string) {
         const dataEnhanced = {
             ...data,
-            lastChange: new Date().toISOString(),
             changedBy: userId,
         };
 
@@ -21,7 +20,7 @@ export default class OrderManager {
     }
 
     public async deleteOrder(orderId: string) {
-        return await Order.findOneAndDelete({_id: orderId});
+        return await Order.findByIdAndDelete(orderId);
     }
 
     public async updateOrder(orderId: string, data: object) {
@@ -31,7 +30,7 @@ export default class OrderManager {
     public getOrdersBySalon(specialists: Array<string | UserModel>) {
         const orders: any[] = [];
         specialists.forEach((specialist) => {
-            orders.push(Order.find({specialist:specialist}));
+            orders.push(Order.find({specialist: specialist}));
         });
 
         return orders;

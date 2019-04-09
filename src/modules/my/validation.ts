@@ -1,23 +1,20 @@
 import * as yup from 'yup';
-import {greaterThanField} from '../../utils/yup';
-
-const yupAdjusted = yup as any;
 
 export const orderValidation = yup.object().shape({
-    phone: yupAdjusted
+    phone: yup
         .string()
         .max(20),
-    email: yupAdjusted
+    email: yup
         .string()
         .email()
         .max(80),
-    noteCustomer: yupAdjusted
+    noteCustomer: yup
         .string()
         .max(1000),
-    noteAdmin: yupAdjusted
+    noteAdmin: yup
         .string()
         .max(1000),
-    notificationType: yupAdjusted
+    notificationType: yup
         .string()
         .required(),
     notificationTime: yup
@@ -43,20 +40,20 @@ export const orderValidation = yup.object().shape({
 });
 
 export const updateOrderValidation = yup.object().shape({
-    phone: yupAdjusted
+    phone: yup
         .string()
         .max(20),
-    email: yupAdjusted
+    email: yup
         .string()
         .email()
         .max(80),
-    noteCustomer: yupAdjusted
+    noteCustomer: yup
         .string()
         .max(1000),
-    noteAdmin: yupAdjusted
+    noteAdmin: yup
         .string()
         .max(1000),
-    notificationType: yupAdjusted
+    notificationType: yup
         .string()
         .required(),
     notificationTime: yup
