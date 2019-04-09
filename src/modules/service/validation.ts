@@ -15,7 +15,7 @@ export const newServiceValidation = yup.object().shape({
     timeWindows: yup.array().of(yup.object().shape({
             start: yup.number().required(),
             end: yup.number().required(),
-        })).required(),
+        })),
     price: yup
         .number()
         .required(),
