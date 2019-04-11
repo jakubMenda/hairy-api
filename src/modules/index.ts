@@ -15,7 +15,7 @@ export default Router()
   .use('/users', usersController)
   .use('/category', categoryController)
   .use('/salon', salonController)
-  .use('/order', orderController)
+  .use('/orders', orderController)
   .use('/hair-type', hairTypeController)
   .use(authenticate)
   .use('/my', myController);

@@ -3,9 +3,11 @@ import * as yup from 'yup';
 export const orderValidation = yup.object().shape({
     phone: yup
         .string()
-        .max(20),
+        .max(20)
+        .required(),
     email: yup
         .string()
+        .required()
         .email()
         .max(80),
     noteCustomer: yup
@@ -15,38 +17,30 @@ export const orderValidation = yup.object().shape({
         .string()
         .max(1000),
     notificationType: yup
-        .string()
-        .required(),
+        .string(),
     notificationTime: yup
-        .date()
-        .required(),
+        .date(),
     firstName: yup
         .string()
         .required(),
     lastName: yup
         .string()
         .required(),
-    lastChange: yup
-        .date(),
-    changedBy: yup
-        .string(),
     specialist: yup
-        .string(),
-    orderStatus: yup
-        .string(),
-    services: yup
-        .array()
-        .of(yup.string()),
+        .string()
+        .required(),
+    service: yup
+        .string()
+        .required(),
+    date: yup
+      .date()
+      .required(),
 });
 
 export const updateOrderValidation = yup.object().shape({
     phone: yup
         .string()
         .max(20),
-    email: yup
-        .string()
-        .email()
-        .max(80),
     noteCustomer: yup
         .string()
         .max(1000),
@@ -54,26 +48,15 @@ export const updateOrderValidation = yup.object().shape({
         .string()
         .max(1000),
     notificationType: yup
-        .string()
-        .required(),
+        .string(),
     notificationTime: yup
-        .date()
-        .required(),
-    firstName: yup
-        .string()
-        .required(),
-    lastName: yup
-        .string()
-        .required(),
-    lastChange: yup
         .date(),
-    changedBy: yup
+    firstName: yup
+        .string(),
+    lastName: yup
         .string(),
     specialist: yup
         .string(),
-    orderStatus: yup
+    service: yup
         .string(),
-    services: yup
-        .array()
-        .of(yup.string()),
 });

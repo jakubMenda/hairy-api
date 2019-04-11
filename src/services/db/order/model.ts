@@ -2,6 +2,11 @@ import {Document, model, Model, Schema} from 'mongoose';
 import {UserModel} from '../users/model';
 import {ServiceModel} from '../service/model';
 
+export enum OrderStatus {
+    NEW = 'new',
+    MODIFIED = 'modified',
+}
+
 export interface OrderModel extends Document {
     phone?: string;
     email?: string;
@@ -11,11 +16,11 @@ export interface OrderModel extends Document {
     notificationTime?: Date;
     firstName?: string;
     lastName?: string;
-    lastChange?: Date;
     changedBy?: string | UserModel;
     specialist?: string | UserModel;
     orderStatus?: string;
-    services?: Array<string | ServiceModel>;
+    service?: string | ServiceModel;
+    date: Date | string;
 }
 
 export const OrderSchema: Schema = new Schema({
@@ -29,19 +34,15 @@ export const OrderSchema: Schema = new Schema({
     },
     noteCustomer: {
         type: String,
-        required: true,
     },
     noteAdmin: {
         type: String,
-        required: true,
     },
     notificationType: {
         type: String,
-        required: true,
     },
     notificationTime: {
         type: Date,
-        required: true,
     },
     firstName: {
         type: String,
@@ -51,12 +52,6 @@ export const OrderSchema: Schema = new Schema({
         type: String,
         required: true,
     },
-    lastChange: {
-        type: Date,
-        createdAt: true,
-        updatedAt: true,
-        required: false,
-    },
     changedBy: {
         type: Schema.Types.ObjectId,
         ref: 'User',
@@ -65,13 +60,20 @@ export const OrderSchema: Schema = new Schema({
     specialist: {
         type: Schema.Types.ObjectId,
         ref: 'User',
-        required: false,
+        required: true,
     },
     orderStatus: {
         type: String,
         required: true,
     },
-    services: [{type: Schema.Types.ObjectId, ref: 'Service'}],
+    service: {
+        type: Schema.Types.ObjectId,
+        ref: 'Service',
+    },
+    date: {
+        type: String,
+        required: true,
+    },
 }, {
     timestamps: true,
 });

@@ -1,32 +1,26 @@
-import {NextFunction, Request, Response, Router} from 'express';
-import {getRequestingUser} from '../../utils/authentication';
-import {NOT_FOUND, OK} from 'http-codes';
-import {HttpError} from '../../utils/errorHandling/errors';
-import {DBService} from '../../di/services/DBService';
-import {orderValidation} from '../my/validation';
+import { NextFunction, Request, Response, Router } from 'express';
+import { CREATED } from 'http-codes';
+import { DBService } from '../../di/services/DBService';
+import { orderValidation } from './validation';
+import { EmailsService } from '../../di/services/EmailsService';
 
 const orderController = Router();
 
-orderController.post('/order', async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const token = req.header('Authorization');
-        const user = await getRequestingUser(token);
+orderController.post('/', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    await orderValidation.validate(req.body);
 
-        if (!user) {
-            throw new HttpError({
-                statusCode: NOT_FOUND,
-                message: 'User not found',
-            });
-        }
+    const order = await DBService.OrderService.createOrder(req.body);
 
-        await orderValidation.validate(req.body);
+    await EmailsService.sendNewOrderCustomerEmail(req.body);
 
-        await DBService.OrderService.createOrder(req.body, user.id);
+    const specialist = await DBService.UsersService.getUserById(req.body.specialist);
+    await EmailsService.sendNewOrderSpecialistEmail(specialist.email, req.body);
 
-        res.status(OK).json();
-    } catch (e) {
-        return next(e);
-    }
+    res.status(CREATED).json(order);
+  } catch (e) {
+    return next(e);
+  }
 });
 
 export default orderController;

@@ -8,6 +8,10 @@ export default class UsersManager {
     return await User.findOne({ email });
   }
 
+  public async getUserById(id: string) {
+    return await User.findById(id);
+  }
+
   public async getUserByCredentials(email: string, pass: string) {
     // Vytáhnu usera z db
     const user = await this.getUserByEmail(email);

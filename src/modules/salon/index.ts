@@ -41,41 +41,4 @@ salonController.post('/', authenticate, async (req: Request, res: Response, next
   }
 });
 
-myController.get('/:salonId/order', async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const token = req.header('Authorization');
-    const user = await getRequestingUser(token);
-
-    const salonId = req.params.salonId;
-
-    if (!user) {
-      throw new HttpError({
-        statusCode: NOT_FOUND,
-        message: 'User not found',
-      });
-    }
-
-    const salon = await DBService.SalonService.getSalonByUserId(user.id);
-
-    if (!salon) {
-      throw new HttpError({
-        statusCode: NOT_FOUND,
-        message: 'User not assigned to any salon.',
-      });
-    }
-
-    if (!salon.id.equals(salonId)) {
-      throw new HttpError({
-        statusCode: FORBIDDEN,
-        message: 'User not assigned to salon id=${salonId}.',
-      });
-    }
-
-    res.status(OK).json(await DBService.OrderService.getOrdersBySalon(salon.specialists));
-
-  } catch (e) {
-    return next(e);
-  }
-});
-
 export default salonController;
