@@ -35,7 +35,7 @@ export const ServiceSchema: Schema = new Schema({
         required: true,
       },
     },{_id: false}),
-    required: true,
+    required: false,
   }],
   duration: {
     type: Number,
