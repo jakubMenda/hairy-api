@@ -28,6 +28,10 @@
     {
       "name": "hair-type",
       "description": "Typy vlasů (krátké, dlouhé,...)"
+    },
+    {
+      "name": "orders",
+      "description": "Objednávky (přístup pro koncového uživatele)"
     }
   ],
   "host": "menda-hairy-api.herokuapp.com",
@@ -116,6 +120,375 @@
             }
           }
         ]
+      }
+    },
+    "/salon": {
+      "post": {
+        "tags": [
+          "salon"
+        ],
+        "summary": "Založení nové objednávky koncovým uživatelem",
+        "description": "Založení nové objednávky koncovým uživatelem",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Tělo dotazu",
+            "required": "true",
+            "schema": {
+              "properties": {
+                "service": {
+                  "type": "string",
+                  "required": "true"
+                },
+                "phone": {
+                  "type": "string",
+                  "required": "true"
+                },
+                "email": {
+                  "type": "string",
+                  "required": "true"
+                },
+                "noteCustomer": {
+                  "type": "string"
+                },
+                "firstName": {
+                  "type": "string",
+                  "required": "true"
+                },
+                "lastName": {
+                  "type": "string",
+                  "required":  "true"
+                },
+                "specialist": {
+                  "type": "string",
+                  "required": "true"
+                },
+                "date": {
+                  "type": "string",
+                  "required": "true"
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "/salon/orders": {
+      "get": {
+        "tags": [
+          "my"
+        ],
+        "summary": "Seznam objednávek vztahující se k salónu",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "service": {
+                    "type": "string"
+                  },
+                  "_id": {
+                    "type": "string"
+                  },
+                  "phone": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "noteCustomer": {
+                    "type": "string"
+                  },
+                  "noteAdmin": {
+                    "type": "string"
+                  },
+                  "notificationType": {
+                    "type": "string"
+                  },
+                  "notificationTime": {
+                    "type": "string"
+                  },
+                  "firstName": {
+                    "type": "string"
+                  },
+                  "lastName": {
+                    "type": "string"
+                  },
+                  "changedBy": {
+                    "type": "string"
+                  },
+                  "specialist": {
+                    "type": "string"
+                  },
+                  "orderStatus": {
+                    "type": "string"
+                  },
+                  "date": {
+                    "type": "string"
+                  },
+                  "createdAt": {
+                    "type": "string"
+                  },
+                  "updatedAt": {
+                    "type": "string"
+                  },
+                  "__v": {
+                    "type": "integer",
+                    "format": "int32"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/my/orders": {
+      "get": {
+        "tags": [
+          "my"
+        ],
+        "summary": "Seznam objednávek přihlášeného specialisty (nikoli pro celý salón)",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "service": {
+                    "type": "string"
+                  },
+                  "_id": {
+                    "type": "string"
+                  },
+                  "phone": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "noteCustomer": {
+                    "type": "string"
+                  },
+                  "noteAdmin": {
+                    "type": "string"
+                  },
+                  "notificationType": {
+                    "type": "string"
+                  },
+                  "notificationTime": {
+                    "type": "string"
+                  },
+                  "firstName": {
+                    "type": "string"
+                  },
+                  "lastName": {
+                    "type": "string"
+                  },
+                  "changedBy": {
+                    "type": "string"
+                  },
+                  "specialist": {
+                    "type": "string"
+                  },
+                  "orderStatus": {
+                    "type": "string"
+                  },
+                  "date": {
+                    "type": "string"
+                  },
+                  "createdAt": {
+                    "type": "string"
+                  },
+                  "updatedAt": {
+                    "type": "string"
+                  },
+                  "__v": {
+                    "type": "integer",
+                    "format": "int32"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "my"
+        ],
+        "summary": "Úprava objednávky. Může provádět admin nebo specialista přiřazený k objednávce.",
+        "description": "Úprava objednávky. Může provádět admin nebo specialista přiřazený k objednávce.",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID objednavky",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Tělo dotazu",
+            "required": "true",
+            "schema": {
+              "properties": {
+                "service": {
+                  "type": "string"
+                },
+                "phone": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string"
+                },
+                "noteCustomer": {
+                  "type": "string"
+                },
+                "noteAdmin": {
+                  "type": "string"
+                },
+                "notificationType": {
+                  "type": "string"
+                },
+                "notificationTime": {
+                  "type": "string"
+                },
+                "firstName": {
+                  "type": "string"
+                },
+                "lastName": {
+                  "type": "string"
+                },
+                "specialist": {
+                  "type": "string"
+                },
+                "date": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "my"
+        ],
+        "summary": "Založení nové objednávky (adminem nebo specialistou, specialista musí přiřadit sám sebe, nikoho jiného)",
+        "description": "Založení nové objednávky (adminem nebo specialistou, specialista musí přiřadit sám sebe, nikoho jiného)",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Tělo dotazu",
+            "required": "true",
+            "schema": {
+              "properties": {
+                "service": {
+                  "type": "string",
+                  "required": "true"
+                },
+                "phone": {
+                  "type": "string",
+                  "required": "true"
+                },
+                "email": {
+                  "type": "string",
+                  "required": "true"
+                },
+                "noteCustomer": {
+                  "type": "string"
+                },
+                "noteAdmin": {
+                  "type": "string"
+                },
+                "notificationType": {
+                  "type": "string"
+                },
+                "notificationTime": {
+                  "type": "string"
+                },
+                "firstName": {
+                  "type": "string",
+                  "required": "true"
+                },
+                "lastName": {
+                  "type": "string",
+                  "required":  "true"
+                },
+                "specialist": {
+                  "type": "string",
+                  "required": "true"
+                },
+                "date": {
+                  "type": "string",
+                  "required": "true"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "my"
+        ],
+        "summary": "Smazání objednávky (pouze adminem nebo specialistou k objednávce přiřazeným)",
+        "operationId": "Smazání objednávky (pouze adminem nebo specialistou k objednávce přiřazeným)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID objednavky",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
       }
     },
     "/hair-type": {
@@ -908,8 +1281,12 @@
                   "items": {
                     "type": "object",
                     "properties": {
-                      "start":{ "type": "number" },
-                      "end":{ "type": "number" }
+                      "start": {
+                        "type": "number"
+                      },
+                      "end": {
+                        "type": "number"
+                      }
                     }
                   }
                 },
@@ -967,8 +1344,12 @@
                   "items": {
                     "type": "object",
                     "properties": {
-                      "start":{ "type": "number" },
-                      "end":{ "type": "number" }
+                      "start": {
+                        "type": "number"
+                      },
+                      "end": {
+                        "type": "number"
+                      }
                     }
                   }
                 },
@@ -1022,8 +1403,12 @@
                   "items": {
                     "type": "object",
                     "properties": {
-                      "start":{ "type": "number" },
-                      "end":{ "type": "number" }
+                      "start": {
+                        "type": "number"
+                      },
+                      "end": {
+                        "type": "number"
+                      }
                     }
                   }
                 },
@@ -1064,6 +1449,84 @@
             "in": "body",
             "name": "body",
             "required": "true"
+          }
+        ]
+      }
+    },
+    "/orders": {
+      "post": {
+        "tags": [
+          "orders"
+        ],
+        "summary": "Vlozeni objednavky",
+        "description": "vlozeni objednavky",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Tělo dotazu",
+            "required": "true",
+            "schema": {
+              "properties": {
+                "services": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "_id": {
+                  "type": "string"
+                },
+                "phone": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string"
+                },
+                "noteCustomer": {
+                  "type": "string"
+                },
+                "noteAdmin": {
+                  "type": "string"
+                },
+                "notificationType": {
+                  "type": "string"
+                },
+                "notificationTime": {
+                  "type": "string"
+                },
+                "firstName": {
+                  "type": "string"
+                },
+                "lastName": {
+                  "type": "string"
+                },
+                "lastChange": {
+                  "type": "string"
+                },
+                "changedBy": {
+                  "type": "string"
+                },
+                "specialist": {
+                  "type": "string"
+                },
+                "orderStatus": {
+                  "type": "string"
+                },
+                "createdAt": {
+                  "type": "string"
+                },
+                "updatedAt": {
+                  "type": "string"
+                }
+              }
+            }
           }
         ]
       }

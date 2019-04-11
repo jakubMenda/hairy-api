@@ -1,18 +1,16 @@
-import { Salon } from './model';
-import { HttpError } from '../../../utils/errorHandling/errors';
-import { UNAUTHORIZED } from 'http-codes';
-import { ObjectID } from 'bson';
+import {Salon} from './model';
+import {ObjectID} from 'bson';
 
 export default class SalonManager {
   public async getSalonByUserId(userId: string) {
-    const salon = await Salon.findOne({ manager: userId })
+    let salon = await Salon.findOne({ manager: userId })
       .populate('manager', '-password')
       .populate('specialists', '-password')
       .populate('createdBy', '-password')
       .populate('updatedBy', '-password');
 
     if (!salon) {
-      await Salon.findOne({ specialists: userId })
+      salon =  await Salon.findOne({ specialists: userId })
         .populate('manager', '-password')
         .populate('specialists', '-password')
         .populate('createdBy', '-password')

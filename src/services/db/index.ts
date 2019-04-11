@@ -2,6 +2,7 @@ import Users from './users';
 import Category from './category';
 import Salon from './salon';
 import HairType from './hairType';
+import Order from './order';
 import Service from './service';
 
 export default class DBManager {
@@ -9,6 +10,7 @@ export default class DBManager {
     public CategoryService: Category;
     public SalonService: Salon;
     public HairTypeService: HairType;
+    public OrderService: Order;
     public ServiceService: Service;
 
     constructor() {
@@ -16,6 +18,7 @@ export default class DBManager {
         this.CategoryService = new Category();
         this.SalonService = new Salon();
         this.HairTypeService = new HairType();
+        this.OrderService = new Order();
         this.ServiceService = new Service();
     }
 }

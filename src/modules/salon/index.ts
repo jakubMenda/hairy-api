@@ -1,11 +1,12 @@
-import { NextFunction, Request, Response, Router } from 'express';
-import { FORBIDDEN, NOT_FOUND, OK } from 'http-codes';
+import {NextFunction, Request, Response, Router} from 'express';
+import {FORBIDDEN, NOT_FOUND, OK} from 'http-codes';
 import _ from 'lodash';
-import { salonValidation } from './validation';
-import { HttpError } from '../../utils/errorHandling/errors';
-import { getRequestingUser } from '../../utils/authentication';
-import { DBService } from '../../di/services/DBService';
-import { authenticate } from '../../middleware/authentication';
+import {salonValidation} from './validation';
+import {HttpError} from '../../utils/errorHandling/errors';
+import {getRequestingUser} from '../../utils/authentication';
+import {DBService} from '../../di/services/DBService';
+import {authenticate} from '../../middleware/authentication';
+import myController from '../my';
 
 const salonController = Router();
 

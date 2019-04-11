@@ -1,7 +1,11 @@
+import _ from 'lodash';
+import moment from 'moment';
 import sgMail from '@sendgrid/mail';
 import changePassword from '../../emailTemplates/changePassword';
 import welcomeAboard from '../../emailTemplates/welcomeAboard';
 import specialistWelcomeAboard from '../../emailTemplates/specialistWelcomeAboard';
+import newOrderCustomer from '../../emailTemplates/newOrderCustomer';
+import newOrderSpecialist from '../../emailTemplates/newOrderSpecialist';
 
 export default class EmailsService {
   private providerMail: string;
@@ -44,6 +48,46 @@ export default class EmailsService {
       to: email,
       from: this.providerMail,
       subject: 'Hair studio: vítejte na palubě!',
+      html: mailContent,
+    };
+    await sgMail.send(mailSettings);
+  }
+
+  public async sendNewOrderSpecialistEmail(email: string, data: object) {
+    const logoUrl = `${this.appUrl}/images/logo.png`;
+    const mailContent = newOrderSpecialist(
+      _.get(data, 'firstName'),
+      _.get(data, 'lastName'),
+      _.get(data, 'email'),
+      _.get(data, 'phone'),
+      moment(_.get(data, 'date')).format('DD.MM., HH:mm'),
+      this.providerMail,
+      logoUrl
+    );
+
+    const mailSettings = {
+      to: email,
+      from: this.providerMail,
+      subject: 'Hair studio: nová objednávka!',
+      html: mailContent,
+    };
+    await sgMail.send(mailSettings);
+  }
+
+  public async sendNewOrderCustomerEmail(data: object) {
+    const logoUrl = `${this.appUrl}/images/logo.png`;
+    const mailContent = newOrderCustomer(
+      _.get(data, 'firstName'),
+      _.get(data, 'lastName'),
+      moment(_.get(data, 'date')).format('DD.MM., HH:mm'),
+      this.providerMail,
+      logoUrl
+    );
+
+    const mailSettings = {
+      to: _.get(data, 'email'),
+      from: this.providerMail,
+      subject: 'Hair studio: nová objednávka!',
       html: mailContent,
     };
     await sgMail.send(mailSettings);
