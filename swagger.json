@@ -71,10 +71,10 @@
         }
       }
     },
-    "/salon": {
+    "/orders": {
       "post": {
         "tags": [
-          "salon"
+          "orders"
         ],
         "summary": "Založení salónu",
         "description": "",
@@ -1453,13 +1453,13 @@
         ]
       }
     },
-    "/orders": {
+    "/salon": {
       "post": {
         "tags": [
-          "orders"
+          "salon"
         ],
-        "summary": "Vlozeni objednavky",
-        "description": "vlozeni objednavky",
+        "summary": "Založení nového salónu",
+        "description": "Založení nového salónu",
         "consumes": [
           "application/json"
         ],
@@ -1474,56 +1474,45 @@
             "required": "true",
             "schema": {
               "properties": {
-                "services": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
+                "name": {
+                  "type": "string",
+                  "required": "true"
                 },
-                "_id": {
-                  "type": "string"
+                "city": {
+                  "type": "string",
+                  "required": "true"
                 },
-                "phone": {
-                  "type": "string"
+                "street": {
+                  "type": "string",
+                  "required": "true"
                 },
                 "email": {
-                  "type": "string"
+                  "type": "string",
+                  "required": "true"
                 },
-                "noteCustomer": {
-                  "type": "string"
+                "phone": {
+                  "type": "string",
+                  "required": "true"
                 },
-                "noteAdmin": {
-                  "type": "string"
+                "postCode": {
+                  "type": "string",
+                  "required": "true"
                 },
-                "notificationType": {
-                  "type": "string"
+                "houseNumber": {
+                  "type": "string",
+                  "required": "true"
                 },
-                "notificationTime": {
-                  "type": "string"
+                "deposit": {
+                  "type": "string",
+                  "required": "true"
                 },
-                "firstName": {
-                  "type": "string"
+                "serviceCancelDate": {
+                  "type": "string",
+                  "required": "true"
                 },
-                "lastName": {
-                  "type": "string"
-                },
-                "lastChange": {
-                  "type": "string"
-                },
-                "changedBy": {
-                  "type": "string"
-                },
-                "specialist": {
-                  "type": "string"
-                },
-                "orderStatus": {
-                  "type": "string"
-                },
-                "createdAt": {
-                  "type": "string"
-                },
-                "updatedAt": {
-                  "type": "string"
+                "specialists": {
+                  "type": "string",
+                  "required": "true"
                 }
               }
             }
