@@ -164,7 +164,7 @@
                 },
                 "lastName": {
                   "type": "string",
-                  "required":  "true"
+                  "required": "true"
                 },
                 "specialist": {
                   "type": "string",
@@ -454,7 +454,7 @@
                 },
                 "lastName": {
                   "type": "string",
-                  "required":  "true"
+                  "required": "true"
                 },
                 "specialist": {
                   "type": "string",
@@ -816,6 +816,12 @@
                 "workingAtSalonId": {
                   "type": "string",
                   "required": "true"
+                },
+                "services": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
                 }
               }
             }
@@ -1041,6 +1047,12 @@
                 },
                 "workingAtSalonId": {
                   "type": "string"
+                },
+                "services": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
                 }
               }
             }
@@ -1518,6 +1530,208 @@
             }
           }
         ]
+      }
+    },
+    "/users/specialists": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Hledání specialistů podle serviceId",
+        "description": "Hledání specialistů podle serviceId",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "serviceId",
+            "description": "Query parametry (za otazníkem)",
+            "required": "true",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Výsledky - specialisté vykonávající danou službu",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "firstName": {
+                    "type": "string",
+                    "required": "true"
+                  },
+                  "lastName": {
+                    "type": "string",
+                    "required": "true"
+                  },
+                  "email": {
+                    "type": "string",
+                    "uniqueItems": "true",
+                    "required": "true"
+                  },
+                  "password": {
+                    "type": "string",
+                    "required": "true"
+                  },
+                  "isSpecialist": {
+                    "type": "boolean"
+                  },
+                  "practiceFrom": {
+                    "type": "string"
+                  },
+                  "workingFromMinutes": {
+                    "type": "number"
+                  },
+                  "workingToMinutes": {
+                    "type": "number"
+                  },
+                  "workingDays": {
+                    "type": "array",
+                    "items": {
+                      "type": "number"
+                    }
+                  },
+                  "specializations": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "workingAtSalonId": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Špatné id služby",
+            "schema": {
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/specialists/:specialistId/timetable": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Detailní rozvrh specialisty dle id",
+        "description": "Detailní rozvrh specialisty dle id",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "specialistId",
+            "description": "Parametr v cestě endpointu",
+            "required": "true",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Specialista - info + jednotlivé rozvrhové akce",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "specialistInfo": {
+                  "type": "object",
+                  "properties": {
+                    "firstName": {
+                      "type": "string",
+                      "required": "true"
+                    },
+                    "lastName": {
+                      "type": "string",
+                      "required": "true"
+                    },
+                    "email": {
+                      "type": "string",
+                      "uniqueItems": "true",
+                      "required": "true"
+                    },
+                    "password": {
+                      "type": "string",
+                      "required": "true"
+                    },
+                    "isSpecialist": {
+                      "type": "boolean"
+                    },
+                    "practiceFrom": {
+                      "type": "string"
+                    },
+                    "workingFromMinutes": {
+                      "type": "number"
+                    },
+                    "workingToMinutes": {
+                      "type": "number"
+                    },
+                    "workingDays": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "specializations": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "workingAtSalonId": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "scheduledEvents": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "start": {
+                        "type": "string"
+                      },
+                      "end": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Špatné id specialisty",
+            "schema": {
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
       }
     }
   }

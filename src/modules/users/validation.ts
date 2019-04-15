@@ -81,9 +81,12 @@ export const newSpecialistValidation = yup.object().shape({
   isSpecialist: yupAdjusted
     .boolean()
     .required(),
+  services: yupAdjusted
+    .array()
+    .of(yup.string()),
 });
 
-export const signInValidation = yup.object(). shape({
+export const signInValidation = yup.object().shape({
   email: yup
     .string()
     .email()
@@ -96,10 +99,22 @@ export const signInValidation = yup.object(). shape({
     .required(),
 });
 
-export const resetPasswordValidation = yup.object(). shape({
+export const resetPasswordValidation = yup.object().shape({
   email: yup
     .string()
     .email()
     .max(80)
+    .required(),
+});
+
+export const specialistsQueryValidation = yup.object().shape({
+  serviceId: yup
+    .string()
+    .required(),
+});
+
+export const specialistsTimetableParamsValidation = yup.object().shape({
+  specialistId: yup
+    .string()
     .required(),
 });

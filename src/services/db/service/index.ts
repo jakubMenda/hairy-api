@@ -2,7 +2,11 @@ import {Service} from './model';
 
 export default class ServiceManager {
   public async findServiceById(id: string) {
-    return await Service.findById(id);
+    try {
+      return await Service.findById(id);
+    } catch(e) {
+      return null;
+    }
   }
 
   public async updateService(id: string, data: object) {

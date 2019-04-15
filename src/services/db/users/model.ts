@@ -80,6 +80,7 @@ export const UserSchema: Schema = new Schema({
     type: Boolean,
     required: true,
   },
+  services: [{ type: Schema.Types.ObjectId, ref: 'Service' }],
 });
 
 // Definice funkcí prováděných před / po nějaké akci na modelu
