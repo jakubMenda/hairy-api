@@ -446,6 +446,7 @@ myController.delete('/orders/:orderId', async (req: Request, res: Response, next
     }
 
     await DBService.OrderService.deleteOrder(orderId);
+    EmailsService.sendOrderDeletionEmail(order.date, order.email);
     res.status(OK).json();
 
   } catch (e) {
