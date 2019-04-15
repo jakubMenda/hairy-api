@@ -8,8 +8,20 @@ export default class UsersManager {
     return await User.findOne({ email });
   }
 
+  public async getSpecialistsByService(serviceId: string) {
+    try {
+      return await User.find({ services: serviceId, isSpecialist: true }, '-password');
+    } catch(e) {
+      return null;
+    }
+  }
+
   public async getUserById(id: string) {
-    return await User.findById(id);
+    try {
+      return await User.findById(id, '-password');
+    } catch(e) {
+      return null;
+    }
   }
 
   public async getUserByCredentials(email: string, pass: string) {

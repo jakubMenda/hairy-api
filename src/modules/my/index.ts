@@ -9,6 +9,7 @@ import { newServiceValidation, updateServiceValidation } from '../service/valida
 import { EmailsService } from '../../di/services/EmailsService';
 import { OrderModel } from '../../services/db/order/model';
 import moment = require('moment');
+import { asyncForEach } from '../../utils/async';
 
 const myController = Router();
 
@@ -35,7 +36,7 @@ myController.put('/user', async (req: Request, res: Response, next: NextFunction
     let allowedUpdates: string[] = [];
 
     if (req.body.isSpecialist) {
-      allowedUpdates = ['firstName', 'lastName', 'password', 'practiceFrom', 'workingFromMinutes', 'workingToMinutes', 'workingDays', 'specialization', 'workingAtSalonId', 'isSpecialist'];
+      allowedUpdates = ['firstName', 'lastName', 'password', 'practiceFrom', 'workingFromMinutes', 'workingToMinutes', 'workingDays', 'specialization', 'workingAtSalonId', 'isSpecialist', 'services'];
     } else {
       allowedUpdates = ['firstName', 'lastName', 'password', 'isSpecialist'];
     }
@@ -56,6 +57,19 @@ myController.put('/user', async (req: Request, res: Response, next: NextFunction
       throw new HttpError({
         statusCode: NOT_FOUND,
         message: 'User not found',
+      });
+    }
+
+    if (req.body.services) {
+      await asyncForEach(req.body.services, async (serviceId: string) => {
+        const serviceInDb = await DBService.ServiceService.findServiceById(serviceId);
+
+        if (!serviceInDb) {
+          throw new HttpError({
+            statusCode: NOT_FOUND,
+            message: `Service ${serviceId} not found`,
+          });
+        }
       });
     }
 
@@ -173,6 +187,16 @@ myController.post('/salon/services', async (req: Request, res: Response, next: N
     }
 
     await newServiceValidation.validate(req.body);
+    if (req.body.timeWindows && req.body.timeWindows.length) {
+      req.body.timeWindows.forEach((timeWindow: any) => {
+        if (timeWindow.start > req.body.duration || timeWindow.end > req.body.duration) {
+          throw new HttpError({
+            statusCode: BAD_REQUEST,
+            message: 'Time windows can only be set BEFORE the duration runs out',
+          });
+        }
+      });
+    }
     req.body.salon = salon.id;
     const service = await DBService.ServiceService.createService(req.body);
 

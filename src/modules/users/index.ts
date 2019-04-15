@@ -1,13 +1,22 @@
 import { NextFunction, Request, Response, Router } from 'express';
 import _ from 'lodash';
 import { DBService, EmailsService } from '../../di';
-import { CONFLICT, OK, CREATED, NOT_FOUND } from 'http-codes';
+import { CONFLICT, OK, CREATED, NOT_FOUND, BAD_REQUEST } from 'http-codes';
 import { HttpError } from '../../utils/errorHandling/errors';
-import { newSpecialistValidation, newUserValidation, resetPasswordValidation, signInValidation } from './validation';
+import {
+  newSpecialistValidation,
+  newUserValidation,
+  resetPasswordValidation,
+  signInValidation,
+  specialistsQueryValidation, specialistsTimetableParamsValidation,
+} from './validation';
 import { generatePassword } from '../../utils/passwordGenerator';
 import { authenticate } from '../../middleware/authentication';
 import { getRequestingUser } from '../../utils/authentication';
 import { UserModel } from '../../services/db/users/model';
+import { asyncForEach } from '../../utils/async';
+import { OrderModel } from '../../services/db/order/model';
+import moment = require('moment');
 
 const usersController = Router();
 
@@ -89,6 +98,19 @@ usersController.post('/specialist', authenticate, async (req: Request, res: Resp
       const generatedPassword = generatePassword();
       userData.password = generatedPassword;
 
+      if (req.body.services) {
+        await asyncForEach(req.body.services, async (serviceId: string) => {
+          const serviceInDb = await DBService.ServiceService.findServiceById(serviceId);
+
+          if (!serviceInDb) {
+            throw new HttpError({
+              statusCode: NOT_FOUND,
+              message: `Service ${serviceId} not found`,
+            });
+          }
+        });
+      }
+
       const savedUser = await DBService.UsersService.saveUser(userData);
 
       const specialistsIds = adminsSalon.specialists.map((user: UserModel) => user._id);
@@ -131,7 +153,7 @@ usersController.post('/sign-in', async (req: Request, res: Response, next: NextF
       token,
       user: profile,
     });
-  } catch(e) {
+  } catch (e) {
     return next(e);
   }
 });
@@ -154,6 +176,91 @@ usersController.put('/reset-password', async (req: Request, res: Response, next:
     await EmailsService.sendResetPasswordMail(userModel.email, generatedPassword);
     await userModel.save();
     res.status(OK).json(await userModel.getPublicProfile());
+  } catch (e) {
+    return next(e);
+  }
+});
+
+usersController.get('/specialists', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const queryParams = _.get(req, 'query');
+
+    await specialistsQueryValidation.validate(queryParams);
+
+    const users = await DBService.UsersService.getSpecialistsByService(queryParams.serviceId);
+    if (!users) {
+      throw new HttpError({
+        statusCode: BAD_REQUEST,
+        message: `Failed. ServiceId query param (${queryParams.serviceId}) probably points to non-existent service.`,
+      });
+    }
+
+    res.status(OK).json(users);
+  } catch (e) {
+    return next(e);
+  }
+});
+
+usersController.get('/specialists/:specialistId/timetable', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const params = _.get(req, 'params');
+
+    await specialistsTimetableParamsValidation.validate(params);
+
+    const specialistInfo = await DBService.UsersService.getUserById(params.specialistId);
+
+    if (!specialistInfo) {
+      throw new HttpError({
+        statusCode: NOT_FOUND,
+        message: `Specialist with id (${params.specialistId}) not found.`,
+      });
+    }
+
+    if (!specialistInfo.isSpecialist) {
+      throw new HttpError({
+        statusCode: BAD_REQUEST,
+        message: `User with id (${params.specialistId}) is not specialist.`,
+      });
+    }
+
+    const orders = await DBService.OrderService.getUnpopulatedOrdersByUser(params.specialistId);
+
+    const events: any[] = [];
+
+    orders.forEach((order: any) => {
+      if (typeof order.service !== 'string' && moment().isBefore(moment(order.date))) {
+        if ((!order.service.timeWindows || (Array.isArray(order.service.timeWindows) && !order.service.timeWindows.length))) {
+          events.push({
+            start: order.date,
+            end: moment(order.date).add(order.service.duration, 'minutes').toISOString(),
+          });
+        }
+        if (Array.isArray(order.service.timeWindows)) {
+          order.service.timeWindows.forEach((timeWindow: any, index: number) => {
+            if (!index) {
+              events.push({
+                start: order.date,
+                end: moment(order.date).add(timeWindow.start, 'minutes').toISOString(),
+              });
+            }
+
+            events.push({
+              start: moment(order.date).add(timeWindow.end, 'minutes').toISOString(),
+              end: order.service.timeWindows[index + 1] ?
+                moment(order.date).add(order.service.timeWindows[index + 1], 'minutes').toISOString() :
+                moment(order.date).add(order.service.duration, 'minutes').toISOString(),
+            });
+          });
+        }
+      }
+    });
+
+    const responseObj = {
+      specialistInfo: specialistInfo,
+      scheduledEvents: events,
+    };
+
+    res.status(OK).json(responseObj);
   } catch (e) {
     return next(e);
   }
