@@ -24,4 +24,16 @@ export default class ServiceManager {
   public async removeServiceById(serviceId: string) {
     return await Service.findByIdAndRemove(serviceId);
   }
+
+  public async getServicesByFilters(salonId: string, hairType: string, category: string) {
+    try {
+      return await Service.find({
+        salon: salonId,
+        hairType: hairType,
+        category: category,
+      });
+    } catch(e) {
+      return null;
+    }
+  }
 }

@@ -20,6 +20,14 @@ export default class SalonManager {
     return salon;
   }
 
+  public async getSalonById(salonId: string) {
+    try {
+      return await Salon.findById(salonId);
+    } catch(e) {
+      return null;
+    }
+  }
+
   public async createSalon(data: object, managerId: string, isSpecialist?: boolean) {
     const dataEnhanced: any = {
       ...data,

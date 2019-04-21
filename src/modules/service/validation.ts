@@ -63,3 +63,12 @@ export const updateServiceValidation = yup.object().shape({
     .array()
     .of(yup.string()),
 });
+
+export const serviceGetValidation = yup.object().shape({
+  hairType: yup
+    .string()
+    .required(),
+  category: yup
+    .string()
+    .required(),
+});
