@@ -180,6 +180,50 @@
         ]
       }
     },
+    "/salon/:salonId/services": {
+      "get": {
+        "tags": [
+          "salon"
+        ],
+        "summary": "Služby salónu dle parametrů (hair type a category)",
+        "description": "Služby salónu dle parametrů (hair type a category)",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "salonId",
+            "description": "Parametr v cestě endpointu - id salónu",
+            "required": "true",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "hairType",
+            "description": "Query parametr (za otazníkem) - id typu vlasů",
+            "required": "true",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "category",
+            "description": "Query parametr (za otazníkem) - id kategorie",
+            "required": "true",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
     "/salon/orders": {
       "get": {
         "tags": [
