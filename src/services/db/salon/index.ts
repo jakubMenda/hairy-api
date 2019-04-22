@@ -2,6 +2,14 @@ import {Salon} from './model';
 import {ObjectID} from 'bson';
 
 export default class SalonManager {
+  public async getSalons() {
+    try {
+      return Salon.find();
+    } catch(e) {
+       return null;
+    }
+  }
+
   public async getSalonByUserId(userId: string) {
     let salon = await Salon.findOne({ manager: userId })
       .populate('manager', '-password')

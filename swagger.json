@@ -1574,6 +1574,68 @@
             }
           }
         ]
+      },
+      "get": {
+        "tags": [
+          "salon"
+        ],
+        "summary": "Seznam všech salónů",
+        "description": "Seznam všech salónů",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Výsledky - seznam všech salónů",
+            "schema": {
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "required": "true"
+                },
+                "city": {
+                  "type": "string",
+                  "required": "true"
+                },
+                "street": {
+                  "type": "string",
+                  "required": "true"
+                },
+                "email": {
+                  "type": "string",
+                  "required": "true"
+                },
+                "phone": {
+                  "type": "string",
+                  "required": "true"
+                },
+                "postCode": {
+                  "type": "string",
+                  "required": "true"
+                },
+                "houseNumber": {
+                  "type": "string",
+                  "required": "true"
+                },
+                "deposit": {
+                  "type": "string",
+                  "required": "true"
+                },
+                "serviceCancelDate": {
+                  "type": "string",
+                  "required": "true"
+                },
+                "specialists": {
+                  "type": "string",
+                  "required": "true"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/users/specialists": {

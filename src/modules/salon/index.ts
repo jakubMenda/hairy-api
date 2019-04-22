@@ -42,6 +42,21 @@ salonController.post('/', authenticate, async (req: Request, res: Response, next
   }
 });
 
+salonController.get('/', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const salons = await DBService.SalonService.getSalons();
+    if (!salons) {
+      throw new HttpError({
+        statusCode: NOT_FOUND,
+        message: 'No salon',
+      });
+    }
+    res.status(OK).json(salons);
+  } catch (e) {
+    return next(e);
+  }
+});
+
 salonController.get('/:salonId/services', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const salonId = _.get(req.params, 'salonId');
