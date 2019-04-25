@@ -1,4 +1,4 @@
-export default (firstName: string, lastName: string, date: string, sender: string, logoUrl: string, cancellationLink: string) => {
+export default (date: string, sender: string, logoUrl: string, firstName: string, lastName: string) => {
   return `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN""http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -303,16 +303,10 @@ export default (firstName: string, lastName: string, date: string, sender: strin
                                                                                             <div class='contentEditable'
                                                                                                  style='text-align: center;'>
                                                                                                 <h2 style="font-size: 20px;">
-                                                                                                    Objednávka potvrzena</h2>
+                                                                                                    Objednávka zrušena</h2>
                                                                                                 <br>
-                                                                                                <p>Dobrý den <b>${firstName} ${lastName}</b>! Vaše objednávka na datum <b>${date}</b> v našem salónu proběhla úspěšně! Budeme se na Vás těšit.</p>
+                                                                                                <p>Objednávka na datum <b>${date}</b> (${firstName} ${lastName}) byla zrušena.</p>
                                                                                                 <br><br>
-                                                                                                <p>V případě potřeby je možné objednávku minimálně 24 hodin předem bezplatně stornovat kliknutím na odkaz níže.</p>
-                                                                                                <br><br>
-                                                                                                <a
-                                                                                                   class='link3'
-                                                                                                   href=${cancellationLink}
-                                                                                                   style='color:red;'>Zrušit objednávku</a>
                                                                                             </div>
                                                                                         </div>
                                                                                     </td>

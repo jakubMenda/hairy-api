@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response, Router } from 'express';
-import { getRequestingUser } from '../../utils/authentication';
+import { getOrderCancellationLink, getRequestingUser } from '../../utils/authentication';
 import { BAD_REQUEST, CONFLICT, CREATED, FORBIDDEN, NOT_FOUND, OK, UNAUTHORIZED } from 'http-codes';
 import { HttpError } from '../../utils/errorHandling/errors';
 import { updateSalonValidation } from '../salon/validation';
@@ -367,8 +367,9 @@ myController.post('/orders', async (req: Request, res: Response, next: NextFunct
     await orderValidation.validate(req.body);
 
     const order = await DBService.OrderService.createOrder(req.body, user.id);
+    const cancellationLink = getOrderCancellationLink(order._id.toString());
 
-    await EmailsService.sendNewOrderCustomerEmail(req.body);
+    await EmailsService.sendNewOrderCustomerEmail(req.body, cancellationLink);
 
     const specialist = await DBService.UsersService.getUserById(req.body.specialist);
     await EmailsService.sendNewOrderSpecialistEmail(specialist.email, req.body);
@@ -582,7 +583,7 @@ myController.put('/holiday/:id', async (req: Request, res: Response, next: NextF
       }
     });
 
-    await DBService.HolidayService.updateHoliday(user._id, req.params.id, body)
+    await DBService.HolidayService.updateHoliday(user._id, req.params.id, body);
     res.status(OK).json({});
   } catch (e) {
     return next(e);
