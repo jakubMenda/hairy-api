@@ -17,6 +17,7 @@ import { UserModel } from '../../services/db/users/model';
 import { asyncForEach } from '../../utils/async';
 import { OrderModel } from '../../services/db/order/model';
 import moment = require('moment');
+import { HolidayModel } from '../../services/db/holiday/model';
 
 const usersController = Router();
 
@@ -224,6 +225,7 @@ usersController.get('/specialists/:specialistId/timetable', async (req: Request,
     }
 
     const orders = await DBService.OrderService.getUnpopulatedOrdersByUser(params.specialistId);
+    const holidays = await DBService.HolidayService.getHolidayByUser(params.specialistId);
 
     const events: any[] = [];
 
@@ -253,6 +255,13 @@ usersController.get('/specialists/:specialistId/timetable', async (req: Request,
           });
         }
       }
+    });
+
+    holidays.forEach((holiday: HolidayModel) => {
+      events.push({
+        start: holiday.from,
+        end: holiday.to,
+      });
     });
 
     const responseObj = {

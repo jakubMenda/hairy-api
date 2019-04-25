@@ -535,6 +535,203 @@
         }
       }
     },
+    "/my/holiday": {
+      "get": {
+        "tags": [
+          "my"
+        ],
+        "summary": "Naplánované volno pro daného specialistu",
+        "description": "Naplánované volno pro daného specialistu",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "_id": {
+                    "type": "string"
+                  },
+                  "from": {
+                    "type": "string"
+                  },
+                  "to": {
+                    "type": "string"
+                  },
+                  "createdAt": {
+                    "type": "string"
+                  },
+                  "updatedAt": {
+                    "type": "string"
+                  },
+                  "__v": {
+                    "type": "integer",
+                    "format": "int32"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "my"
+        ],
+        "summary": "Úprava mého naplánovaného volna",
+        "description": "Úprava objednávky. Může provádět admin nebo specialista přiřazený k objednávce.",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID volna",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Tělo dotazu",
+            "required": "true",
+            "schema": {
+              "properties": {
+                "from": {
+                  "type": "string",
+                  "required": "true"
+                },
+                "to": {
+                  "type": "string",
+                  "required": "true"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "my"
+        ],
+        "summary": "Naplánování volna",
+        "description": "Naplánování volna",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Tělo dotazu",
+            "required": "true",
+            "schema": {
+              "properties": {
+                "from": {
+                  "type": "string",
+                  "required": "true"
+                },
+                "to": {
+                  "type": "string",
+                  "required": "true"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "my"
+        ],
+        "summary": "Smazání volna",
+        "operationId": "Smazání volna",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID objednavky",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/my/specialists/:specialistId/holiday": {
+      "get": {
+        "tags": [
+          "my"
+        ],
+        "summary": "Naplánované volno pro specialistu předaného jako součást url",
+        "description": "Naplánované volno pro specialistu předaného jako součást url",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "specialistId",
+            "in": "path",
+            "description": "ID specialisty",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "_id": {
+                    "type": "string"
+                  },
+                  "from": {
+                    "type": "string"
+                  },
+                  "to": {
+                    "type": "string"
+                  },
+                  "createdAt": {
+                    "type": "string"
+                  },
+                  "updatedAt": {
+                    "type": "string"
+                  },
+                  "__v": {
+                    "type": "integer",
+                    "format": "int32"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/hair-type": {
       "get": {
         "tags": [

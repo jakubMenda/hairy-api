@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response, Router } from 'express';
 import { getRequestingUser } from '../../utils/authentication';
-import { BAD_REQUEST, CREATED, FORBIDDEN, NOT_FOUND, OK, UNAUTHORIZED } from 'http-codes';
+import { BAD_REQUEST, CONFLICT, CREATED, FORBIDDEN, NOT_FOUND, OK, UNAUTHORIZED } from 'http-codes';
 import { HttpError } from '../../utils/errorHandling/errors';
 import { updateSalonValidation } from '../salon/validation';
 import { DBService } from '../../di/services/DBService';
@@ -10,6 +10,7 @@ import { EmailsService } from '../../di/services/EmailsService';
 import { OrderModel } from '../../services/db/order/model';
 import moment = require('moment');
 import { asyncForEach } from '../../utils/async';
+import { holidayValidation } from '../holiday/validation';
 
 const myController = Router();
 
@@ -449,6 +450,158 @@ myController.delete('/orders/:orderId', async (req: Request, res: Response, next
     EmailsService.sendOrderDeletionEmail(order.date, order.email);
     res.status(OK).json();
 
+  } catch (e) {
+    return next(e);
+  }
+});
+
+myController.get('/specialists/:specialistId/holiday', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const token = req.header('Authorization');
+    const user = await getRequestingUser(token);
+
+    if (!user) {
+      throw new HttpError({
+        statusCode: NOT_FOUND,
+        message: 'User not found',
+      });
+    }
+
+    if (!await isSalonManager(user._id)) {
+      throw new HttpError({
+        statusCode: FORBIDDEN,
+        message: 'Only admin can see other specialists holiday',
+      });
+    }
+    res.status(OK).json(await DBService.HolidayService.getHolidayByUser(req.params.specialistId));
+  } catch (e) {
+    return next(e);
+  }
+});
+
+myController.get('/holiday', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const token = req.header('Authorization');
+    const user = await getRequestingUser(token);
+
+    if (!user) {
+      throw new HttpError({
+        statusCode: NOT_FOUND,
+        message: 'User not found',
+      });
+    }
+    res.status(OK).json(await DBService.HolidayService.getHolidayByUser(user._id));
+  } catch (e) {
+    return next(e);
+  }
+});
+
+myController.post('/holiday', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const token = req.header('Authorization');
+    const user = await getRequestingUser(token);
+    const { body } = req;
+
+    if (!user) {
+      throw new HttpError({
+        statusCode: NOT_FOUND,
+        message: 'User not found',
+      });
+    }
+
+    await holidayValidation.validate(body);
+    const orders = await DBService.OrderService.getOrdersByUser(user._id);
+
+    if (!orders) {
+      throw new HttpError({
+        statusCode: BAD_REQUEST,
+        message: 'Failed to retrieve users service. User is probably not a specialist.',
+      });
+    }
+
+    const fromMoment = moment(body.from);
+    const toMoment = moment(body.to);
+
+    orders.forEach((order: OrderModel) => {
+      const date = moment(order.date);
+
+      if (typeof order.service !== 'string') {
+        if ((fromMoment.isBefore(date) && toMoment.isAfter(date))
+          || (fromMoment.isBefore(date.add(order.service.duration, 'minutes')) && toMoment.isAfter(date.add(order.service.duration, 'minutes')))) {
+          throw new HttpError({
+            statusCode: CONFLICT,
+            message: 'There are conflicting scheduled orders at this time already',
+          });
+        }
+      }
+    });
+
+    res.status(CREATED).json(await DBService.HolidayService.createHoliday(user._id, body));
+  } catch (e) {
+    return next(e);
+  }
+});
+
+myController.put('/holiday/:id', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const token = req.header('Authorization');
+    const user = await getRequestingUser(token);
+    const { body } = req;
+
+    if (!user) {
+      throw new HttpError({
+        statusCode: NOT_FOUND,
+        message: 'User not found',
+      });
+    }
+
+    await holidayValidation.validate(body);
+    const orders = await DBService.OrderService.getOrdersByUser(user._id);
+
+    if (!orders) {
+      throw new HttpError({
+        statusCode: BAD_REQUEST,
+        message: 'Failed to retrieve users service. User is probably not a specialist.',
+      });
+    }
+
+    const fromMoment = moment(body.from);
+    const toMoment = moment(body.to);
+
+    orders.forEach((order: OrderModel) => {
+      const date = moment(order.date);
+
+      if (typeof order.service !== 'string') {
+        if ((fromMoment.isBefore(date) && toMoment.isAfter(date))
+          || (fromMoment.isBefore(date.add(order.service.duration, 'minutes')) && toMoment.isAfter(date.add(order.service.duration, 'minutes')))) {
+          throw new HttpError({
+            statusCode: CONFLICT,
+            message: 'There are conflicting scheduled orders at this time already',
+          });
+        }
+      }
+    });
+
+    await DBService.HolidayService.updateHoliday(user._id, req.params.id, body)
+    res.status(OK).json({});
+  } catch (e) {
+    return next(e);
+  }
+});
+
+myController.delete('/holiday/:id', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const token = req.header('Authorization');
+    const user = await getRequestingUser(token);
+
+    if (!user) {
+      throw new HttpError({
+        statusCode: NOT_FOUND,
+        message: 'User not found',
+      });
+    }
+
+    res.status(OK).json(await DBService.HolidayService.deleteHoliday(user._id, req.params.id));
   } catch (e) {
     return next(e);
   }
