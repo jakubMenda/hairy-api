@@ -18,6 +18,10 @@ export default class OrderManager {
     return await Order.findById(orderId);
   }
 
+  public async getOrderPopulated(orderId: string) {
+    return await Order.findById(orderId).populate('specialist', '-password');
+  }
+
   public async createOrder(data: object, userId?: string) {
     const dataEnhanced: any = { ...data };
 

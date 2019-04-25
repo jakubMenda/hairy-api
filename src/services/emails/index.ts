@@ -7,6 +7,7 @@ import specialistWelcomeAboard from '../../emailTemplates/specialistWelcomeAboar
 import newOrderCustomer from '../../emailTemplates/newOrderCustomer';
 import newOrderSpecialist from '../../emailTemplates/newOrderSpecialist';
 import orderDeletion from '../../emailTemplates/orderDeletion';
+import orderDeletionSpecialist from '../../emailTemplates/orderDeletionSpecialist';
 
 export default class EmailsService {
   private providerMail: string;
@@ -75,14 +76,15 @@ export default class EmailsService {
     await sgMail.send(mailSettings);
   }
 
-  public async sendNewOrderCustomerEmail(data: object) {
+  public async sendNewOrderCustomerEmail(data: object, cancellationLink: string) {
     const logoUrl = `${this.appUrl}/images/logo.png`;
     const mailContent = newOrderCustomer(
       _.get(data, 'firstName'),
       _.get(data, 'lastName'),
       moment(_.get(data, 'date')).format('DD.MM. HH:mm'),
       this.providerMail,
-      logoUrl
+      logoUrl,
+      cancellationLink,
     );
 
     const mailSettings = {
@@ -106,6 +108,25 @@ export default class EmailsService {
       to: customerEmail,
       from: this.providerMail,
       subject: 'Hair studio: Vaše objednávka byla zrušena',
+      html: mailContent,
+    };
+    await sgMail.send(mailSettings);
+  }
+
+  public async sendOrderDeletionSpecialistEmail(date: string | Date, specialistEmail: string, firstName: string, lastName: string) {
+    const logoUrl = `${this.appUrl}/images/logo.png`;
+    const mailContent = orderDeletionSpecialist(
+      moment(date).format('DD.MM. HH:mm'),
+      this.providerMail,
+      logoUrl,
+      firstName,
+      lastName
+    );
+
+    const mailSettings = {
+      to: specialistEmail,
+      from: this.providerMail,
+      subject: 'Hair studio: Objednávka zrušena',
       html: mailContent,
     };
     await sgMail.send(mailSettings);
