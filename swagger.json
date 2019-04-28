@@ -1560,6 +1560,12 @@
                 },
                 "salon": {
                   "type": "string"
+                },
+                "beforeTime": {
+                  "type": "string"
+                },
+                "afterTime": {
+                  "type": "string"
                 }
               }
             }
@@ -1620,6 +1626,12 @@
                 },
                 "category": {
                   "type": "string"
+                },
+                "beforeTime": {
+                  "type": "string"
+                },
+                "afterTime": {
+                  "type": "string"
                 }
               }
             }
@@ -1678,6 +1690,12 @@
                   "type": "string"
                 },
                 "category": {
+                  "type": "string"
+                },
+                "beforeTime": {
+                  "type": "string"
+                },
+                "afterTime": {
                   "type": "string"
                 }
               }

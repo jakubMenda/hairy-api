@@ -231,10 +231,15 @@ usersController.get('/specialists/:specialistId/timetable', async (req: Request,
 
     orders.forEach((order: any) => {
       if (typeof order.service !== 'string' && moment().isBefore(moment(order.date))) {
+        const beforeTime = order.service.beforeTime ? order.service.beforeTime : 0;
+        const afterTime = order.service.afterTime ? order.service.afterTime : 0;
         if ((!order.service.timeWindows || (Array.isArray(order.service.timeWindows) && !order.service.timeWindows.length))) {
           events.push({
             start: order.date,
-            end: moment(order.date).add(order.service.duration, 'minutes').toISOString(),
+            end: moment(order.date).add(order.service.duration, 'minutes')
+                .add(beforeTime, 'minutes')
+                .add(afterTime, 'minutes')
+                .toISOString(),
           });
         }
         if (Array.isArray(order.service.timeWindows)) {
@@ -242,15 +247,23 @@ usersController.get('/specialists/:specialistId/timetable', async (req: Request,
             if (!index) {
               events.push({
                 start: order.date,
-                end: moment(order.date).add(timeWindow.start, 'minutes').toISOString(),
+                end: moment(order.date).add(timeWindow.start, 'minutes')
+                    .add(beforeTime, 'minutes')
+                    .add(afterTime, 'minutes')
+                    .toISOString(),
               });
             }
 
             events.push({
-              start: moment(order.date).add(timeWindow.end, 'minutes').toISOString(),
+              start: moment(order.date)
+                  .add(beforeTime, 'minutes')
+                  .add(timeWindow.end, 'minutes')
+                  .toISOString(),
               end: order.service.timeWindows[index + 1] ?
                 moment(order.date).add(order.service.timeWindows[index + 1], 'minutes').toISOString() :
-                moment(order.date).add(order.service.duration, 'minutes').toISOString(),
+                moment(order.date).add(order.service.duration, 'minutes')
+                    .add(afterTime, 'minutes')
+                    .toISOString(),
             });
           });
         }

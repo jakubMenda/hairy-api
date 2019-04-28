@@ -13,6 +13,8 @@ export interface ServiceModel extends Document {
   hairType?: string[] | HairTypeModel;
   category?: string[] | CategoryModel;
   salon?: string | SalonModel;
+  beforeTime?: number;
+  afterTime?: number;
 }
 
 export const ServiceSchema: Schema = new Schema({
@@ -63,6 +65,14 @@ export const ServiceSchema: Schema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Salon',
     required: true,
+  },
+  beforeTime: {
+      type: Number,
+      required: false,
+  },
+  afterTime: {
+      type: Number,
+      required: false,
   },
 });
 

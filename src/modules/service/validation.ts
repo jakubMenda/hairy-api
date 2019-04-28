@@ -36,6 +36,10 @@ export const newServiceValidation = yup.object().shape({
     .array()
     .of(yupAdjusted.string())
     .required(),
+  beforeTime: yupAdjusted
+    .number(),
+  afterTime: yupAdjusted
+    .number(),
 });
 
 export const updateServiceValidation = yup.object().shape({
@@ -62,6 +66,10 @@ export const updateServiceValidation = yup.object().shape({
   hairType: yup
     .array()
     .of(yup.string()),
+  beforeTime: yupAdjusted
+      .number(),
+  afterTime: yupAdjusted
+      .number(),
 });
 
 export const serviceGetValidation = yup.object().shape({
