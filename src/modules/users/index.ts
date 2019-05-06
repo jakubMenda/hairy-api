@@ -149,10 +149,15 @@ usersController.post('/sign-in', async (req: Request, res: Response, next: NextF
     // Vytáhnu z dat uživatele heslo - nechci ho posílat po síti
     const profile = await userModel.getPublicProfile();
 
+    const salon = await DBService.SalonService.getSalonByAdminId(userModel._id);
+
     // pošlu zpět klientovi
     res.status(OK).json({
       token,
-      user: profile,
+      user: {
+        ...profile,
+        isAdmin: Boolean(salon),
+      },
     });
   } catch (e) {
     return next(e);
