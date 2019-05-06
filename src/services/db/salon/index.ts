@@ -10,6 +10,10 @@ export default class SalonManager {
     }
   }
 
+  public async getSalonByAdminId(userId: string) {
+    return await Salon.findOne({ manager: userId });
+  }
+
   public async getSalonByUserId(userId: string) {
     let salon = await Salon.findOne({ manager: userId })
       .populate('manager', '-password')

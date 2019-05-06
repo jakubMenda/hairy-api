@@ -25,7 +25,11 @@ myController.get('/user', async (req: Request, res: Response, next: NextFunction
         message: 'User not found',
       });
     }
-    res.status(OK).json(await user.getPublicProfile());
+
+    const salon = await DBService.SalonService.getSalonByAdminId(user._id);
+    const userData = await user.getPublicProfile();
+
+    res.status(OK).json({ ...user, isAdmin: Boolean(salon) });
   } catch (e) {
     return next(e);
   }
