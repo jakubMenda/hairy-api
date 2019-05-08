@@ -2036,6 +2036,164 @@
           }
         }
       }
+    },
+    "/my/specialists/:specialistId": {
+      "put": {
+        "tags": [
+          "my"
+        ],
+        "summary": "Editace profilu specialisty",
+        "description": "Vše volitelné - updatuje se jen to, co poskytnete",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "specialistId",
+            "description": "Parametr v cestě endpointu - id specialisty",
+            "required": "true",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Tělo dotazu",
+            "required": "true",
+            "schema": {
+              "properties": {
+                "firstName": {
+                  "type": "string"
+                },
+                "lastName": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                },
+                "isSpecialist": {
+                  "type": "boolean"
+                },
+                "practiceFrom": {
+                  "type": "string"
+                },
+                "workingFromMinutes": {
+                  "type": "number"
+                },
+                "workingToMinutes": {
+                  "type": "number"
+                },
+                "workingDays": {
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  }
+                },
+                "specializations": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "workingAtSalonId": {
+                  "type": "string"
+                },
+                "services": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Upravený profil (bez hesla)",
+            "schema": {
+              "properties": {
+                "_id": {
+                  "type": "string",
+                  "uniqueItems": "true"
+                },
+                "firstName": {
+                  "type": "string"
+                },
+                "lastName": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string",
+                  "uniqueItems": "true"
+                },
+                "isSpecialist": {
+                  "type": "boolean"
+                },
+                "practiceFrom": {
+                  "type": "string"
+                },
+                "workingFromMinutes": {
+                  "type": "number"
+                },
+                "workingToMinutes": {
+                  "type": "number"
+                },
+                "workingDays": {
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  }
+                },
+                "specializations": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "workingAtSalonId": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Špatný autorizační token / není admin",
+            "schema": {
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Nebyl nalezen uživatel, kterého se snažíte upravit",
+            "schema": {
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - vyplněna nesprávná pole",
+            "schema": {
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 }

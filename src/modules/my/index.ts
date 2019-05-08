@@ -29,7 +29,7 @@ myController.get('/user', async (req: Request, res: Response, next: NextFunction
     const salon = await DBService.SalonService.getSalonByAdminId(user._id);
     const userData = await user.getPublicProfile();
 
-    res.status(OK).json({ ...user, isAdmin: Boolean(salon) });
+    res.status(OK).json({ ...userData, isAdmin: Boolean(salon) });
   } catch (e) {
     return next(e);
   }
@@ -455,6 +455,67 @@ myController.delete('/orders/:orderId', async (req: Request, res: Response, next
     EmailsService.sendOrderDeletionEmail(order.date, order.email);
     res.status(OK).json();
 
+  } catch (e) {
+    return next(e);
+  }
+});
+
+myController.put('/specialists/:specialistId', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const updates = Object.keys(req.body);
+    let allowedUpdates: string[] = [];
+
+    if (req.body.isSpecialist) {
+      allowedUpdates = ['firstName', 'lastName', 'password', 'practiceFrom', 'workingFromMinutes', 'workingToMinutes', 'workingDays', 'specialization', 'workingAtSalonId', 'isSpecialist', 'services'];
+    } else {
+      allowedUpdates = ['firstName', 'lastName', 'password', 'isSpecialist'];
+    }
+
+    const isValidOperation = updates.every((update: string) => allowedUpdates.includes(update));
+
+    if (!isValidOperation) {
+      throw new HttpError({
+        statusCode: BAD_REQUEST,
+        message: 'Bad request',
+      });
+    }
+
+    const token = req.header('Authorization');
+    const requestingUser = await getRequestingUser(token);
+
+    if (!requestingUser || !await isSalonManager(requestingUser._id)) {
+      throw new HttpError({
+        statusCode: FORBIDDEN,
+        message: 'Only admin can edit specialists profile',
+      });
+    }
+
+    const user: any = await DBService.UsersService.getUserById(req.params.specialistId);
+
+    if (!user) {
+      throw new HttpError({
+        statusCode: NOT_FOUND,
+        message: 'User not found',
+      });
+    }
+
+    if (req.body.services) {
+      await asyncForEach(req.body.services, async (serviceId: string) => {
+        const serviceInDb = await DBService.ServiceService.findServiceById(serviceId);
+
+        if (!serviceInDb) {
+          throw new HttpError({
+            statusCode: NOT_FOUND,
+            message: `Service ${serviceId} not found`,
+          });
+        }
+      });
+    }
+
+    updates.forEach((update: string) => user[update] = req.body[update]);
+    const updatedUser = await user.save();
+
+    res.status(OK).json(await updatedUser.getPublicProfile());
   } catch (e) {
     return next(e);
   }
