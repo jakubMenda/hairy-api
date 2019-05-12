@@ -62,7 +62,7 @@ export default class EmailsService {
       _.get(data, 'lastName'),
       _.get(data, 'email'),
       _.get(data, 'phone'),
-      moment(_.get(data, 'date')).format('DD.MM. HH:mm'),
+      moment(_.get(data, 'date')).add(2, 'hours').format('DD.MM. HH:mm'),
       this.providerMail,
       logoUrl
     );
@@ -81,7 +81,7 @@ export default class EmailsService {
     const mailContent = newOrderCustomer(
       _.get(data, 'firstName'),
       _.get(data, 'lastName'),
-      moment(_.get(data, 'date')).format('DD.MM. HH:mm'),
+      moment(_.get(data, 'date')).add(2, 'hours').format('DD.MM. HH:mm'),
       this.providerMail,
       logoUrl,
       cancellationLink,
@@ -99,7 +99,7 @@ export default class EmailsService {
   public async sendOrderDeletionEmail(date: string | Date, customerEmail: string) {
     const logoUrl = `${this.appUrl}/images/logo.png`;
     const mailContent = orderDeletion(
-      moment(date).format('DD.MM. HH:mm'),
+      moment(date).add(2, 'hours').format('DD.MM. HH:mm'),
       this.providerMail,
       logoUrl
     );
@@ -116,7 +116,7 @@ export default class EmailsService {
   public async sendOrderDeletionSpecialistEmail(date: string | Date, specialistEmail: string, firstName: string, lastName: string) {
     const logoUrl = `${this.appUrl}/images/logo.png`;
     const mailContent = orderDeletionSpecialist(
-      moment(date).format('DD.MM. HH:mm'),
+      moment(date).add(2, 'hours').format('DD.MM. HH:mm'),
       this.providerMail,
       logoUrl,
       firstName,

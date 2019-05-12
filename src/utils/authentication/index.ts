@@ -16,5 +16,5 @@ export const getOrderCancellationLink = (orderId: string) => {
       expiresIn: '30 days',
     });
 
-  return `${process.env.APP_URL}/orders/cancel/${cancellationToken}`;
+  return `${process.env.APP_URL}orders/cancel/${cancellationToken}`;
 };
